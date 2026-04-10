@@ -3,6 +3,8 @@
 package xyz.aerii.library.utils
 
 import net.minecraft.network.chat.Component
+//~ if >= 1.21.11 'Util' -> 'util.Util'
+import net.minecraft.util.Util
 
 val DURATION_REGEX = Regex("""(\d+(?:\.\d+)?)([dhms])""")
 val LONG_DURATION_REGEX = Regex("""(\d+(?:\.\d+)?)\s+(day|days|hour|hours|minute|minutes|second|seconds)""")
@@ -43,4 +45,8 @@ fun String.unabbreviate(): Double {
 
 fun Int.plural(w1: String, w2: String): String {
     return if (equals(1)) w1 else w2
+}
+
+fun String.open() {
+    Util.getPlatform().openUri(this)
 }
