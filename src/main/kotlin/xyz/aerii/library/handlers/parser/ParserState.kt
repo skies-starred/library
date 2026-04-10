@@ -18,7 +18,7 @@ class ParserState(val whiteBase: Boolean) {
     fun flush(text: String) {
         if (text.isEmpty()) return
         comp.append(Component.literal(text).apply {
-            current?.let { style.withColor(it) }
+            current?.let { style = style.withColor(it) }
 
             style = style
                 .withBold(if (bold) true else null)
