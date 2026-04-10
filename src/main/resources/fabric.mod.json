@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "${id}",
+  "version": "${version}",
+  "name": "${name}",
+  "description": "A very awesome Hypixel SkyBlock library.",
+  "authors": [
+    "Starred"
+  ],
+  "contact": {},
+  "license": "BSD 3-Clause",
+  "environment": "*",
+  "depends": {
+    "fabricloader": ">=0.18",
+    "fabric-api": "*",
+    "fabric-language-kotlin": ">=${kotlin}",
+    "minecraft": "${minecraft}"
+  },
+  "entrypoints": {
+    "client": [
+      {
+        "value": "xyz.aerii.library.Solstice",
+        "adapter": "kotlin"
+      }
+    ]
+  }
+}
