@@ -58,8 +58,20 @@ kotlin {
 }
 
 java {
+    withSourcesJar()
     sourceCompatibility = JavaVersion.VERSION_25
     targetCompatibility = JavaVersion.VERSION_25
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "xyz.aerii"
+            artifactId = "library-$mc"
+            version = project.property("mod.version").toString()
+            from(components["java"])
+        }
+    }
 }
 
 tasks {
