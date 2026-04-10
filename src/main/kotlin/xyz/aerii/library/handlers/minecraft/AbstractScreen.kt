@@ -9,6 +9,7 @@ import net.minecraft.client.gui.screens.Screen
 import net.minecraft.client.input.CharacterEvent
 import net.minecraft.client.input.KeyEvent
 import net.minecraft.client.input.MouseButtonEvent
+import xyz.aerii.library.api.nextTick
 import xyz.aerii.library.utils.literal
 
 abstract class AbstractScreen(
@@ -83,5 +84,9 @@ abstract class AbstractScreen(
 
     override fun mouseScrolled(mouseX: Double, mouseY: Double, horizontal: Double, vertical: Double): Boolean {
         return if (onScramMouseScroll(mouseX.toInt(), mouseY.toInt(), horizontal, vertical)) true else super.mouseScrolled(mouseX, mouseY, horizontal, vertical)
+    }
+
+    fun open() {
+        nextTick { setScreen(this@AbstractScreen) }
     }
 }
