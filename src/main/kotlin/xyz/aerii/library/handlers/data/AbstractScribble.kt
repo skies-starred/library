@@ -20,6 +20,7 @@ import xyz.aerii.library.internal.events.GameEvent
 import xyz.aerii.library.internal.events.core.on
 import xyz.aerii.library.utils.asJsonObjectOrNull
 import xyz.aerii.library.utils.deserialize
+import xyz.aerii.library.utils.safely
 import xyz.aerii.library.utils.serialize
 import java.io.File
 import kotlin.properties.ReadWriteProperty
@@ -57,16 +58,13 @@ open class AbstractScribble(private val name: String, private val path: String, 
         return root!!
     }
 
-    private fun save() {
+    fun save() {
         if (!dirty) return
 
-        try {
+        safely {
             val data = root ?: return
 
-            val wrapped = JsonObject().apply {
-                add("@$name:data", data)
-            }
-
+            val wrapped = JsonObject().apply { add("@$name:data", data) }
             val tempFile = File(file.parent, "${file.name}.tmp")
             tempFile.writeText(gson.toJson(wrapped))
 
@@ -77,7 +75,7 @@ open class AbstractScribble(private val name: String, private val path: String, 
             }
 
             dirty = false
-        } catch (e: Exception) {}
+        }
     }
 
     fun dirty() {
