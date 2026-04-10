@@ -11,18 +11,15 @@ open class AbstractChronos {
     private val server = TickQueue()
     private val executor = Executors.newSingleThreadScheduledExecutor { Thread(it, "solstice-time").apply { isDaemon = true } }
 
-    object Ticks {
-        var client: Int = 0
-        var server: Int = 0
-    }
+    val ticks = Ticks()
 
     fun client() {
-        Ticks.client++
+        ticks.client++
         client.tick()
     }
 
     fun server() {
-        Ticks.server++
+        ticks.server++
         server.tick()
     }
 
