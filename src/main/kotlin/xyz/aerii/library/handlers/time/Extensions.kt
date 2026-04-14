@@ -7,3 +7,6 @@ val Int.client
 
 val Int.server
     get() = AbstractChronos.ServerTicks(this)
+
+val AbstractChronos.ClientTicks.start: AbstractChronos.ClientTicks
+    get() = AbstractChronos.ClientTicks(value, true)

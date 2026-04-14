@@ -1,5 +1,6 @@
 package xyz.aerii.library.handlers.time
 
+import xyz.aerii.library.utils.safely
 import java.util.concurrent.ConcurrentHashMap
 
 class TickQueue {
@@ -9,7 +10,7 @@ class TickQueue {
     fun tick() {
         pending.remove(++current)?.forEach { task ->
             if (task.cancelled) return@forEach
-            task.action()
+            safely { task.action() }
             task.interval?.let { pending.getOrPut(current + it) { ArrayDeque() } += task }
         }
     }
