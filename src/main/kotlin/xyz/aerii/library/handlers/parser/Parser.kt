@@ -115,7 +115,7 @@ fun String.parse(whiteBase: Boolean = false): MutableComponent {
 
         if (lower.startsWith("hover:")) {
             state.flush(substring(textStart, i))
-            state.push { it.apply { style.withHoverEvent(HoverEvent.ShowText(raw.substringAfter(':').trim().parse())) } }
+            state.push { it.apply { style = style.withHoverEvent(HoverEvent.ShowText(raw.substringAfter(':').trim().parse())) } }
 
             textStart = end + 1
             i = end + 1
@@ -134,9 +134,9 @@ fun String.parse(whiteBase: Boolean = false): MutableComponent {
 
                 state.push { c ->
                     when (type) {
-                        "url" -> c.apply { style.withClickEvent(ClickEvent.OpenUrl(URI(value))) }
-                        "command" -> c.apply { style.withClickEvent(ClickEvent.RunCommand(value)) }
-                        "suggest" -> c.apply { style.withClickEvent(ClickEvent.SuggestCommand(value)) }
+                        "url" -> c.apply { style = style.withClickEvent(ClickEvent.OpenUrl(URI(value))) }
+                        "command" -> c.apply { style = style.withClickEvent(ClickEvent.RunCommand(value)) }
+                        "suggest" -> c.apply { style = style.withClickEvent(ClickEvent.SuggestCommand(value)) }
                         else -> c
                     }
                 }
