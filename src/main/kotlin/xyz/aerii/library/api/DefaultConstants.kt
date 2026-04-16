@@ -14,6 +14,9 @@ val EMPTY_UUID = UUID(0, 0)
 val EMPTY_COMPONENT = Component.literal("") as Component
 
 @JvmField
+val EMPTY_OPTIONAL = Optional.empty<Any>()
+
+@JvmField
 val ALWAYS_TRUE = Observable(true).immutable()
 
 @JvmField
