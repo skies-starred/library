@@ -9,6 +9,7 @@
   ],
   "contact": {},
   "license": "BSD 3-Clause",
+  "icon": "assets/aerii/icon.png",
   "environment": "*",
   "depends": {
     "fabricloader": ">=0.18",
