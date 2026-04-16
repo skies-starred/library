@@ -23,5 +23,8 @@
         "adapter": "kotlin"
       }
     ]
-  }
+  },
+  "mixins": [
+    "aerii.library.mixins.json"
+  ]
 }
