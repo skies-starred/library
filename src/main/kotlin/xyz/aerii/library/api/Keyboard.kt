@@ -8,7 +8,7 @@ val Int.bound: Boolean
 val Int.pressed: Boolean
     get() = when {
         !bound -> false
-        this > 0 -> keyed
+        this > 7 -> keyed
         else -> moused
     }
 
