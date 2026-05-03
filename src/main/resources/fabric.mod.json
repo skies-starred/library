@@ -3,7 +3,7 @@
   "id": "${id}",
   "version": "${version}",
   "name": "${name}",
-  "description": "A very awesome Hypixel SkyBlock library.",
+  "description": "A very awesome Hypixel SkyBlock library. Included by mods like Athen, JEC, and so on.",
   "authors": [
     "Starred"
   ],
