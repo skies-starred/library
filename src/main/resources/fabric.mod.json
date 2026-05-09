@@ -10,7 +10,7 @@
   "contact": {},
   "license": "BSD 3-Clause",
   "icon": "assets/aerii/icon.png",
-  "environment": "*",
+  "environment": "client",
   "depends": {
     "fabricloader": ">=0.18",
     "fabric-api": "*",
@@ -27,5 +27,11 @@
   },
   "mixins": [
     "aerii.library.mixins.json"
-  ]
+  ],
+  "custom": {
+    "modmenu": {
+      "update_checker": false,
+      "badges": ["library"]
+    }
+  }
 }
