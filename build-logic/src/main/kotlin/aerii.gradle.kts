@@ -57,7 +57,9 @@ base.archivesName = modId
 
 repositories {
     fun strictMaven(url: String, vararg groups: String) = maven(url) { content { groups.forEach(::includeGroupAndSubgroups) } }
+
     strictMaven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1", "me.djtheredstoner")
+    strictMaven("https://maven.parchmentmc.org/", "org.parchmentmc")
 }
 
 dependencies {
