@@ -2,25 +2,21 @@
 
 package xyz.aerii.library.utils
 
-import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.apache.logging.log4j.Logger
 import xyz.aerii.library.Solstice
+import xyz.aerii.library.Solstice.GSON
+import xyz.aerii.library.Solstice.SCOPE
 import java.io.File
 import java.net.HttpURLConnection
 import java.net.SocketTimeoutException
 import java.net.URI
 import java.util.zip.GZIPInputStream
-
-private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
-val gson = Gson()
+import kotlin.time.Duration.Companion.milliseconds
 
 private val set = setOf(408, 429, 500, 502, 503, 504)
 private val set0 = setOf("POST", "PUT", "PATCH")
@@ -55,7 +51,7 @@ open class WebUtils(val name: String, val logger: Logger = Solstice.LOGGER) {
             } catch (e: Exception) {
                 if (attempt == 2 || !sr(e)) throw e
                 logger.warn("Retrying operation (attempt ${attempt + 1}/3) due to ${e::class.simpleName}: ${e.message}")
-                delay(d.coerceAtMost(30000))
+                delay(d.coerceAtMost(30000).milliseconds)
                 d *= 2
             }
         }
@@ -68,7 +64,7 @@ open class WebUtils(val name: String, val logger: Logger = Solstice.LOGGER) {
         abstract val message: String
         abstract val onError: (Exception) -> Unit
 
-        fun execute() = scope.launch {
+        fun execute() = SCOPE.launch {
             if (log) logger.info(message)
 
             runCatching {
@@ -93,7 +89,7 @@ open class WebUtils(val name: String, val logger: Logger = Solstice.LOGGER) {
         }
 
         fun body(data: Any) = apply {
-            body = data as? String ?: gson.toJson(data)
+            body = data as? String ?: GSON.toJson(data)
             headers["Content-Type"] = "application/json"
         }
 
@@ -102,7 +98,7 @@ open class WebUtils(val name: String, val logger: Logger = Solstice.LOGGER) {
                 block(when (T::class) {
                     String::class -> response as T
                     JsonObject::class -> JsonParser.parseString(response).asJsonObject as T
-                    else -> gson.fromJson(response, object : TypeToken<T>() {}.type)
+                    else -> GSON.fromJson(response, object : TypeToken<T>() {}.type)
                 })
             }
         }
