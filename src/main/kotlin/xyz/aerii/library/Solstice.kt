@@ -5,6 +5,7 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import xyz.aerii.library.internal.misc.DonatorWords
 import xyz.aerii.library.internal.events.dispatcher.EventDispatcher
+import xyz.aerii.library.kommand.loader.CommandLoader
 
 object Solstice : ClientModInitializer {
     @JvmField
@@ -13,6 +14,7 @@ object Solstice : ClientModInitializer {
     override fun onInitializeClient() {
         LOGGER.info("Solstice initialising...")
         LOGGER.debug("Initialised EventDispatcher - {}", EventDispatcher)
+        LOGGER.debug("Initialised CommandLoader - {}", CommandLoader)
         LOGGER.debug("Initialised DonatorWords - {}", DonatorWords)
         LOGGER.info("Solstice finished initialisation.")
     }
