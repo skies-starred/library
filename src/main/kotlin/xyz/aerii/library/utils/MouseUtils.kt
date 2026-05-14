@@ -18,13 +18,22 @@ val mouseSY: Float
     get() = mouseRY * client.window.guiScaledHeight / max(1, client.window.height)
 
 @JvmOverloads
-fun hovered(x: Float, y: Float, w: Float, h: Float, scaled: Boolean = false): Boolean {
+fun hovered(x: Number, y: Number, w: Number, h: Number, scaled: Boolean = false): Boolean {
+    val x = x.toFloat()
+    val y = y.toFloat()
+    val w = w.toFloat()
+    val h = h.toFloat()
+
     return if (scaled) mouseSX in x..(x + w) && mouseSY in y..(y + h)
     else mouseRX in x..(x + w) && mouseRY in y..(y + h)
 }
 
 @JvmOverloads
-fun hovered(x: Float, y: Float, w: Float, scaled: Boolean = false): Boolean {
+fun hovered(x: Number, y: Number, w: Number, scaled: Boolean = false): Boolean {
+    val x = x.toFloat()
+    val y = y.toFloat()
+    val w = w.toFloat()
+
     return if (scaled) mouseSX in x..(x + w) && mouseSY >= y
     else mouseRX in x..(x + w) && mouseRY >= y
 }
