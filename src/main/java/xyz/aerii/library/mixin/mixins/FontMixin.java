@@ -18,22 +18,22 @@ public class FontMixin {
 
     //~ if >= 1.21.11 'FFIZI' -> 'FFIZZI'
     @ModifyVariable(method = "prepareText(Lnet/minecraft/util/FormattedCharSequence;FFIZZI)Lnet/minecraft/client/gui/Font$PreparedText;", at = @At("HEAD"), argsOnly = true)
-    private FormattedCharSequence library$prepareText$sequence(FormattedCharSequence text) {
+    private FormattedCharSequence aerii$library$prepareText$sequence(FormattedCharSequence text) {
         return DonatorWords.INSTANCE.fn(text);
     }
 
     @ModifyVariable(method = "width(Lnet/minecraft/util/FormattedCharSequence;)I", at = @At("HEAD"), argsOnly = true)
-    private FormattedCharSequence library$width$sequence(FormattedCharSequence text) {
+    private FormattedCharSequence aerii$library$width$sequence(FormattedCharSequence text) {
         return DonatorWords.INSTANCE.fn(text);
     }
 
     @ModifyVariable(method = "width(Lnet/minecraft/network/chat/FormattedText;)I", at = @At("HEAD"), argsOnly = true)
-    private FormattedText library$width$text(FormattedText text) {
+    private FormattedText aerii$library$width$text(FormattedText text) {
         return text instanceof Component ? DonatorWords.INSTANCE.fn((Component) text) : text;
     }
 
     @ModifyVariable(method = "width(Ljava/lang/String;)I", at = @At("HEAD"), argsOnly = true)
-    private String library$width$string(String str) {
+    private String aerii$library$width$string(String str) {
         return DonatorWords.INSTANCE.fn(str);
     }
 }
