@@ -27,5 +27,8 @@ public class AvatarRendererMixin {
         float y = c.aerii$library$size$y() * 0.9375f;
         float z = c.aerii$library$size$z() * 0.9375f;
         poseStack.scale(x, y, z);
+
+        if (state.nameTagAttachment != null) state.nameTagAttachment = state.nameTagAttachment.scale(y);
+        state.shadowRadius *= Math.max(x, z) / 1.5f;
     }
 }
