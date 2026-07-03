@@ -87,6 +87,7 @@ abstract class AbstractScreen(
     }
 
     fun open() {
-        nextTick { setScreen(this@AbstractScreen) }
+        //~ if >= 26.2 'setScreen(' -> 'gui.setScreen('
+        nextTick { gui.setScreen(this@AbstractScreen) }
     }
 }

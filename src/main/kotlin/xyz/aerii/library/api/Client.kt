@@ -16,7 +16,8 @@ val chatWidth: Int
     get() = ChatComponent.getWidth(client.options.chatWidth().get())
 
 val chatHeight: Int
-    get() = ChatComponent.getHeight(if (client.gui.chat.isChatFocused) client.options.chatHeightFocused().get() else client.options.chatHeightUnfocused().get())
+    //~ if >= 26.2 'gui.chat' -> 'gui.hud.chat'
+    get() = ChatComponent.getHeight(if (client.gui.hud.chat.isChatFocused) client.options.chatHeightFocused().get() else client.options.chatHeightUnfocused().get())
 
 inline fun mainThread(crossinline block: Minecraft.() -> Unit) {
     client.execute { client.block() }

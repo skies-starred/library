@@ -14,12 +14,14 @@ fun String.message() {
 
 fun String.lie() {
     //~ if >= 26.1 'addMessage' -> 'addClientSystemMessage'
-    mainThread { gui?.chat?.addClientSystemMessage(this@lie.literal()) }
+    //~ if >= 26.2 'chat' -> 'hud?.chat'
+    mainThread { gui?.hud?.chat?.addClientSystemMessage(this@lie.literal()) }
 }
 
 fun Component.lie() {
     //~ if >= 26.1 'addMessage' -> 'addClientSystemMessage'
-    mainThread { gui?.chat?.addClientSystemMessage(this@lie) }
+    //~ if >= 26.2 'chat' -> 'hud?.chat'
+    mainThread { gui?.hud?.chat?.addClientSystemMessage(this@lie) }
 }
 
 fun String.command(bool: Boolean = true) {

@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.loom.obf) apply false
 }
 
-stonecutter active "26.1"
+stonecutter active "26.2"
 
 stonecutter parameters {
     swaps["mod_version"] = "\"" + property("mod.version") + "\""

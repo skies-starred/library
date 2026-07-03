@@ -28,7 +28,9 @@ fun String.showTitle(subTitle: String? = null, fadeIn: Int = 5, stay: Int = 20, 
 @JvmOverloads
 @Suppress("Deprecation")
 fun Component.showTitle(subTitle: Component? = null, fadeIn: Int = 5, stay: Int = 20, fadeOut: Int = 5) = mainThread {
-    gui.setTimes(fadeIn, stay, fadeOut)
-    gui.setTitle(this@showTitle)
-    gui.setSubtitle(subTitle ?: EMPTY_COMPONENT)
+    //~ if >= 26.2 'gui.' -> 'gui.hud.' {
+    gui.hud.setTimes(fadeIn, stay, fadeOut)
+    gui.hud.setTitle(this@showTitle)
+    gui.hud.setSubtitle(subTitle ?: EMPTY_COMPONENT)
+    //~ }
 }
