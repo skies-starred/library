@@ -76,7 +76,7 @@ open class WebUtils(val name: String, val logger: Logger = Solstice.LOGGER) {
         }
     }
 
-    inner class RequestBuilder(private val uri: String, private val method: String, log: Boolean) : BaseBuilder(log) {
+    open inner class RequestBuilder(private val uri: String, private val method: String, log: Boolean) : BaseBuilder(log) {
         val headers: MutableMap<String, String> = mutableMapOf("User-Agent" to "Mozilla/5.0 ($name)")
         var body: String? = null
         var onSuccess: (String) -> Unit = {}
@@ -119,7 +119,7 @@ open class WebUtils(val name: String, val logger: Logger = Solstice.LOGGER) {
                 val int = connection.responseCode
                 if (int in 200..299) {
                     val inp = connection.inputStream
-                    val response = (if ("gzip=true" in uri) GZIPInputStream(inp) else inp).bufferedReader().use { it.readText() }
+                    val response = (if ("gzip=true" in uri || connection.contentEncoding.equals("gzip", true)) GZIPInputStream(inp) else inp).bufferedReader().use { it.readText() }
 
                     if (log) logger.info("Success in $method for $uri → $int (${response.length} bytes)")
                     onSuccess(response)
@@ -149,7 +149,7 @@ open class WebUtils(val name: String, val logger: Logger = Solstice.LOGGER) {
         }
     }
 
-    inner class DownloadBuilder(private val url: String, private val output: File, log: Boolean) : BaseBuilder(log) {
+    open inner class DownloadBuilder(private val url: String, private val output: File, log: Boolean) : BaseBuilder(log) {
         private val headers = mutableMapOf<String, String>()
         private var onProgress: (Long, Long) -> Unit = { _, _ -> }
         private var onComplete: (File) -> Unit = {}
