@@ -20,13 +20,13 @@
   "entrypoints": {
     "client": [
       {
-        "value": "xyz.aerii.library.Solstice",
+        "value": "foo.starred.snowbird.Snowbird",
         "adapter": "kotlin"
       }
     ]
   },
   "mixins": [
-    "aerii.library.mixins.json"
+    "snowbird.mixins.json"
   ],
   "custom": {
     "modmenu": {

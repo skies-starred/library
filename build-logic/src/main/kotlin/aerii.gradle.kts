@@ -96,11 +96,22 @@ loom.apply {
 }
 
 publishing {
+    repositories {
+        val a = if (Regex("-b[0-9]*$") in modVer) "snapshots" else "releases"
+        maven("https://maven.starred.foo/$a") {
+            name = "starred"
+            credentials {
+                username = (project.findProperty("MAVEN_USER") as? String) ?: System.getenv("MAVEN_USER") ?: ""
+                password = (project.findProperty("MAVEN_PASS") as? String) ?: System.getenv("MAVEN_PASS") ?: ""
+            }
+        }
+    }
+
     publications {
         create<MavenPublication>("maven") {
-            groupId = "xyz.aerii"
-            artifactId = "library-$ver"
-            version = modVer
+            groupId = "foo.starred"
+            artifactId = modId
+            version = "$modVer+$ver"
             from(components["java"])
         }
     }

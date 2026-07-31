@@ -1,0 +1,15 @@
+{
+  "required": false,
+  "package": "foo.starred.snowbird.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+    "mixins.AvatarRendererMixin",
+    "mixins.AvatarRenderStateMixin",
+    "mixins.EntityRenderDispatcherMixin",
+    "mixins.FontMixin",
+    "mixins.PlayerMixin"
+  ]
+}
