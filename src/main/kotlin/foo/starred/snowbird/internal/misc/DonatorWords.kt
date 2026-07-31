@@ -6,6 +6,7 @@ import foo.starred.snowbird.api.lie
 import foo.starred.snowbird.api.name
 import foo.starred.snowbird.handlers.minecraft.AbstractWords
 import foo.starred.snowbird.handlers.parser.parse
+import foo.starred.snowbird.internal.utils.mod
 import foo.starred.snowbird.internal.web.WebUtils.request
 import foo.starred.snowbird.kommand.ICommand
 import foo.starred.snowbird.utils.literal
@@ -22,7 +23,7 @@ object DonatorWords : AbstractWords(), ICommand {
     init {
         skips = SKIP
 
-        "https://data.aerii.xyz/donators.json".request {
+        "https://data.starred.foo/donor/names".request {
             onSuccess<JsonObject> { json ->
                 map.clear()
 
@@ -36,22 +37,22 @@ object DonatorWords : AbstractWords(), ICommand {
             }
         }
 
-        command("aerii") {
+        command("snowbird") {
             "name" / "toggle" {
                 val a = name
-                val b = map[a] ?: return@invoke "<#CBA6F7>[Aerii] <red>You don't have a custom name!".parse().lie()
+                val b = map[a] ?: return@invoke "<red>You don't have a custom name!".mod()
                 val c = map1.contains(a)
 
                 if (c) remove(a) else put(a, b.string, b, b.visualOrderText)
                 build()
-                "<#CBA6F7>[Aerii] ${if (c) "<red>Disabled" else "<green>Enabled"}<r> custom name! Run this command again to ${if (c) "<green>enable" else "<red>disable"}<r> it.".parse(true).lie()
+                "${if (c) "<red>Disabled" else "<green>Enabled"}<r> custom name! Run this command again to ${if (c) "<green>enable" else "<red>disable"}<r> it.".mod()
             }
 
             "name" / "toggle" / "all" {
                 val a = map.keys.any(map1::contains)
 
                 if (!bool && a) {
-                    "<#CBA6F7>[Aerii]<r> Are you sure you want to <red>disable ALL donator names?<r> Run this command again to confirm :(".parse(true).lie()
+                    "Are you sure you want to <red>disable ALL donator names?<r> Run this command again to confirm :(".mod()
                     bool = true
                     return@invoke
                 }
@@ -63,11 +64,11 @@ object DonatorWords : AbstractWords(), ICommand {
 
                 build()
                 bool = false
-                "<#CBA6F7>[Aerii] ${if (a) "<red>Disabled" else "<green>Enabled"}<r> all donator names. Run this command again to ${if (a) "<green>enable" else "<red>disable"}<r> them.".parse(true).lie()
+                "${if (a) "<red>Disabled" else "<green>Enabled"}<r> all donator names. Run this command again to ${if (a) "<green>enable" else "<red>disable"}<r> them.".mod()
             }
 
             "name" / "list" {
-                "<#CBA6F7>[Aerii] <r>Donator names:".parse(true).lie()
+                "Donator names:".mod()
                 for ((a, b) in map2) " <dark_gray>• <r>$a <gray>-> ".parse().skip().append(b.toComponent()).lie()
             }
 
@@ -75,7 +76,7 @@ object DonatorWords : AbstractWords(), ICommand {
                 val s = string("search")
                 var i = 0
 
-                "<#CBA6F7>[Aerii] <r>Donator names containing <green>\"$s\"<r>:".parse(true).skip().lie()
+                "Donator names containing <green>\"$s\"<r>:".mod { skip() }
                 for ((a, b) in map2) {
                     val c = b.toComponent()
                     if (!a.contains(s, true) && !c.string.contains(s, true)) continue
@@ -85,7 +86,7 @@ object DonatorWords : AbstractWords(), ICommand {
                 }
 
                 if (i != 0) return@string
-                "<#CBA6F7>[Aerii] <r>Couldn't find any names containing <green>\"$s\"<r>!".parse(true).skip().lie()
+                "Couldn't find any names containing <green>\"$s\"<r>!".mod { skip() }
             }
         }
     }

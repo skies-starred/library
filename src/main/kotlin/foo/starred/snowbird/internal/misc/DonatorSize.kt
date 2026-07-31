@@ -10,7 +10,7 @@ object DonatorSize {
     private var map: Map<String, Vector3f> = emptyMap()
 
     init {
-        "https://data.aerii.xyz/scales.json".request {
+        "https://data.starred.foo/donor/sizes".request {
             onSuccess<Map<String, List<Double>>> { kv ->
                 val map0: MutableMap<String, Vector3f> = mutableMapOf()
 
