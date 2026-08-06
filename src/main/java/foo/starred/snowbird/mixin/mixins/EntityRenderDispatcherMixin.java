@@ -13,9 +13,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(EntityRenderDispatcher.class)
 public class EntityRenderDispatcherMixin {
     @Inject(method = "extractEntity", at = @At("RETURN"))
-    private void aerii$library$extractEntity(Entity entity, float partialTicks, CallbackInfoReturnable<EntityRenderState> cir) {
+    private void snowbird$extractEntity(Entity entity, float partialTicks, CallbackInfoReturnable<EntityRenderState> cir) {
         EntityRenderState a = cir.getReturnValue();
         if (!(a instanceof AvatarRenderState)) return;
-        ((AvatarRenderStateDuck) a).aerii$library$entity(entity);
+        ((AvatarRenderStateDuck) a).snowbird$entity(entity);
     }
 }

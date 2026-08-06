@@ -33,7 +33,7 @@ object DonatorSize {
         val a = map[player.name.string] ?: return false
         val b = player as? PlayerDuck ?: return false
 
-        b.`aerii$library$size`(a.x, a.y, a.z)
+        b.`snowbird$size`(a.x, a.y, a.z)
         return true
     }
 }

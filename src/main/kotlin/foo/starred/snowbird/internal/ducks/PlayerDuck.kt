@@ -3,9 +3,9 @@
 package foo.starred.snowbird.internal.ducks
 
 interface PlayerDuck {
-    fun `aerii$library$size`(): Int
-    fun `aerii$library$size$x`(): Float
-    fun `aerii$library$size$y`(): Float
-    fun `aerii$library$size$z`(): Float
-    fun `aerii$library$size`(i0: Float, i1: Float, i2: Float)
+    fun `snowbird$size`(): Int
+    fun `snowbird$size$x`(): Float
+    fun `snowbird$size$y`(): Float
+    fun `snowbird$size$z`(): Float
+    fun `snowbird$size`(i0: Float, i1: Float, i2: Float)
 }

@@ -15,17 +15,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(AvatarRenderer.class)
 public class AvatarRendererMixin {
     @Inject(method = "scale(Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;)V", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;scale(FFF)V"))
-    private void aerii$library$scale(AvatarRenderState state, PoseStack poseStack, CallbackInfo ci) {
-        final Entity a = ((AvatarRenderStateDuck) state).aerii$library$entity();
+    private void snowbird$scale(AvatarRenderState state, PoseStack poseStack, CallbackInfo ci) {
+        final Entity a = ((AvatarRenderStateDuck) state).snowbird$entity();
         if (a == null) return;
         if (!(a instanceof Player b)) return;
 
         final PlayerDuck c = (PlayerDuck) b;
-        if (c.aerii$library$size() == 0) return;
+        if (c.snowbird$size() == 0) return;
 
-        float x = c.aerii$library$size$x() * 0.9375f;
-        float y = c.aerii$library$size$y() * 0.9375f;
-        float z = c.aerii$library$size$z() * 0.9375f;
+        float x = c.snowbird$size$x() * 0.9375f;
+        float y = c.snowbird$size$y() * 0.9375f;
+        float z = c.snowbird$size$z() * 0.9375f;
         poseStack.scale(x, y, z);
 
         if (state.nameTagAttachment != null) state.nameTagAttachment = state.nameTagAttachment.scale(y);

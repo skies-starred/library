@@ -12,28 +12,28 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 @Mixin(value = Font.class, priority = Integer.MIN_VALUE)
 public class FontMixin {
     @ModifyVariable(method = "prepareText(Ljava/lang/String;FFIZI)Lnet/minecraft/client/gui/Font$PreparedText;", at = @At("HEAD"), argsOnly = true)
-    private String library$prepareText$string(String text) {
+    private String snowbird$prepareText$string(String text) {
         return DonatorWords.INSTANCE.fn(text);
     }
 
     //~ if >= 1.21.11 'FFIZI' -> 'FFIZZI'
     @ModifyVariable(method = "prepareText(Lnet/minecraft/util/FormattedCharSequence;FFIZZI)Lnet/minecraft/client/gui/Font$PreparedText;", at = @At("HEAD"), argsOnly = true)
-    private FormattedCharSequence aerii$library$prepareText$sequence(FormattedCharSequence text) {
+    private FormattedCharSequence snowbird$prepareText$sequence(FormattedCharSequence text) {
         return DonatorWords.INSTANCE.fn(text);
     }
 
     @ModifyVariable(method = "width(Lnet/minecraft/util/FormattedCharSequence;)I", at = @At("HEAD"), argsOnly = true)
-    private FormattedCharSequence aerii$library$width$sequence(FormattedCharSequence text) {
+    private FormattedCharSequence snowbird$width$sequence(FormattedCharSequence text) {
         return DonatorWords.INSTANCE.fn(text);
     }
 
     @ModifyVariable(method = "width(Lnet/minecraft/network/chat/FormattedText;)I", at = @At("HEAD"), argsOnly = true)
-    private FormattedText aerii$library$width$text(FormattedText text) {
+    private FormattedText snowbird$width$text(FormattedText text) {
         return text instanceof Component ? DonatorWords.INSTANCE.fn((Component) text) : text;
     }
 
     @ModifyVariable(method = "width(Ljava/lang/String;)I", at = @At("HEAD"), argsOnly = true)
-    private String aerii$library$width$string(String str) {
+    private String snowbird$width$string(String str) {
         return DonatorWords.INSTANCE.fn(str);
     }
 }

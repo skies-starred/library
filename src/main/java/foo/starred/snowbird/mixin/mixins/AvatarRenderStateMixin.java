@@ -10,15 +10,15 @@ import org.spongepowered.asm.mixin.Unique;
 @Mixin(AvatarRenderState.class)
 public class AvatarRenderStateMixin implements AvatarRenderStateDuck {
     @Unique
-    private Entity aerii$library$entity;
+    private Entity snowbird$entity;
 
     @Override
-    public @Nullable Entity aerii$library$entity() {
-        return aerii$library$entity;
+    public @Nullable Entity snowbird$entity() {
+        return snowbird$entity;
     }
 
     @Override
-    public void aerii$library$entity(@Nullable Entity entity) {
-        aerii$library$entity = entity;
+    public void snowbird$entity(@Nullable Entity entity) {
+        snowbird$entity = entity;
     }
 }

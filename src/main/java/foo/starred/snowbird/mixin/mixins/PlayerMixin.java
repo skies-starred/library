@@ -9,47 +9,47 @@ import org.spongepowered.asm.mixin.Unique;
 @Mixin(Player.class)
 public class PlayerMixin implements PlayerDuck {
     @Unique
-    int aerii$library$size = -1;
+    int snowbird$size = -1;
 
     @Unique
-    float aerii$library$size$x = 1F;
+    float snowbird$size$x = 1F;
 
     @Unique
-    float aerii$library$size$y = 1F;
+    float snowbird$size$y = 1F;
 
     @Unique
-    float aerii$library$size$z = 1F;
+    float snowbird$size$z = 1F;
 
     @Override
-    public int aerii$library$size() {
-        if (aerii$library$size == -1) aerii$library$size = DonatorSize.fn(aerii$library$self()) ? 1 : 0;
-        return aerii$library$size;
+    public int snowbird$size() {
+        if (snowbird$size == -1) snowbird$size = DonatorSize.fn(snowbird$self()) ? 1 : 0;
+        return snowbird$size;
     }
 
     @Override
-    public float aerii$library$size$x() {
-        return aerii$library$size$x;
+    public float snowbird$size$x() {
+        return snowbird$size$x;
     }
 
     @Override
-    public float aerii$library$size$y() {
-        return aerii$library$size$y;
+    public float snowbird$size$y() {
+        return snowbird$size$y;
     }
 
     @Override
-    public float aerii$library$size$z() {
-        return aerii$library$size$z;
+    public float snowbird$size$z() {
+        return snowbird$size$z;
     }
 
     @Override
-    public void aerii$library$size(float i0, float i1, float i2) {
-        aerii$library$size$x = i0;
-        aerii$library$size$y = i1;
-        aerii$library$size$z = i2;
+    public void snowbird$size(float i0, float i1, float i2) {
+        snowbird$size$x = i0;
+        snowbird$size$y = i1;
+        snowbird$size$z = i2;
     }
 
     @Unique
-    private Player aerii$library$self() {
+    private Player snowbird$self() {
         return (Player) (Object) this;
     }
 }
