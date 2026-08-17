@@ -1,4 +1,4 @@
-@file:Suppress("EmptyRange")
+@file:Suppress("EmptyRange", "Unused")
 
 package foo.starred.snowbird.handlers.minecraft
 
@@ -10,19 +10,15 @@ import net.minecraft.network.chat.Style
 import net.minecraft.util.FormattedCharSequence
 
 abstract class AbstractWords {
-    private class Node {
-        val goto = Int2ObjectOpenHashMap<Node>(4)
-        var fail: Node? = null
-        var output: Int = -1
-    }
-
     private var root = Node()
     private var ia = emptyArray<IntArray>()
     private var r0 = emptyArray<String>()
     private var r1 = emptyArray<Component>()
     private var r2 = emptyArray<FormattedCharSequence>()
 
+    val entries = Array(512) { Entry() }
     var skips: String? = null
+    var version: Int = 0
 
     var map0 = HashMap<String, String>()
         private set
@@ -51,6 +47,8 @@ abstract class AbstractWords {
     }
 
     fun build() {
+        version++
+
         val keys = map0.keys.sortedByDescending { it.length }.toTypedArray()
         val n = keys.size
 
@@ -293,6 +291,25 @@ abstract class AbstractWords {
             for (j in 0..<bl) sink.accept(0, bs[j]!!, s[j])
 
             true
+        }
+    }
+
+    companion object {
+        class Entry {
+            @JvmField
+            var version: Int = -1
+            @JvmField
+            var string: String? = null
+            @JvmField
+            var style: Style? = null
+            @JvmField
+            var sequence: FormattedCharSequence? = null
+        }
+
+        private class Node {
+            val goto = Int2ObjectOpenHashMap<Node>(4)
+            var fail: Node? = null
+            var output: Int = -1
         }
     }
 }

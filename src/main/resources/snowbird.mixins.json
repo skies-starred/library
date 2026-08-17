@@ -8,8 +8,11 @@
   "client": [
     "mixins.AvatarRendererMixin",
     "mixins.AvatarRenderStateMixin",
+    "mixins.ClientLanguageMixin",
+    "mixins.ComponentRenderUtilsMixin",
+    "mixins.EditBoxMixin",
     "mixins.EntityRenderDispatcherMixin",
-    "mixins.FontMixin",
-    "mixins.PlayerMixin"
+    "mixins.PlayerMixin",
+    "mixins.StringSplitterMixin"
   ]
 }
