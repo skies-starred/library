@@ -11,7 +11,7 @@ object DonatorSize {
 
     init {
         "https://data.starred.foo/donor/sizes".request {
-            onSuccess<Map<String, List<Double>>> { kv ->
+            success<Map<String, List<Double>>> { kv ->
                 val map0: MutableMap<String, Vector3f> = mutableMapOf()
 
                 for ((k, v) in kv) {

@@ -7,8 +7,8 @@ import foo.starred.snowbird.Snowbird
 import foo.starred.snowbird.api.EMPTY_COMPONENT
 import foo.starred.snowbird.api.lie
 import foo.starred.snowbird.api.name
-import foo.starred.snowbird.handlers.minecraft.AbstractWords
-import foo.starred.snowbird.handlers.parser.parse
+import foo.starred.snowbird.api.text.parser.impl.parse
+import foo.starred.snowbird.api.text.replacer.AbstractTextReplacer
 import foo.starred.snowbird.internal.utils.mod
 import foo.starred.snowbird.internal.web.WebUtils.request
 import foo.starred.snowbird.utils.literal
@@ -17,7 +17,7 @@ import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.MutableComponent
 import net.minecraft.util.FormattedCharSequence
 
-object DonatorWords : AbstractWords(), IKommand<FabricClientCommandSource> {
+object DonatorWords : AbstractTextReplacer(), IKommand<FabricClientCommandSource> {
     override val loader: KommandCommandScope<FabricClientCommandSource> = Snowbird.COMMANDS
 
     private const val SKIP = "aerii_ds_bypass"
@@ -29,7 +29,7 @@ object DonatorWords : AbstractWords(), IKommand<FabricClientCommandSource> {
         skips = SKIP
 
         "https://data.starred.foo/donor/names".request {
-            onSuccess<JsonObject> { json ->
+            success<JsonObject> { json ->
                 map.clear()
 
                 for ((k, v) in json.entrySet()) {

@@ -3,7 +3,6 @@
 package foo.starred.snowbird.utils
 
 import net.minecraft.network.chat.Component
-//~ if >= 1.21.11 'Util' -> 'util.Util'
 import net.minecraft.util.Util
 
 val DURATION_REGEX = Regex("""(\d+(?:\.\d+)?)([dhms])""")
