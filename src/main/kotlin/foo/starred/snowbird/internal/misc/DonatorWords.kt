@@ -1,6 +1,9 @@
 package foo.starred.snowbird.internal.misc
 
 import com.google.gson.JsonObject
+import foo.starred.kommand.IKommand
+import foo.starred.kommand.scopes.KommandCommandScope
+import foo.starred.snowbird.Snowbird
 import foo.starred.snowbird.api.EMPTY_COMPONENT
 import foo.starred.snowbird.api.lie
 import foo.starred.snowbird.api.name
@@ -8,13 +11,15 @@ import foo.starred.snowbird.handlers.minecraft.AbstractWords
 import foo.starred.snowbird.handlers.parser.parse
 import foo.starred.snowbird.internal.utils.mod
 import foo.starred.snowbird.internal.web.WebUtils.request
-import foo.starred.snowbird.kommand.ICommand
 import foo.starred.snowbird.utils.literal
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.MutableComponent
 import net.minecraft.util.FormattedCharSequence
 
-object DonatorWords : AbstractWords(), ICommand {
+object DonatorWords : AbstractWords(), IKommand<FabricClientCommandSource> {
+    override val loader: KommandCommandScope<FabricClientCommandSource> = Snowbird.COMMANDS
+
     private const val SKIP = "aerii_ds_bypass"
 
     private val map = mutableMapOf<String, Component>()
