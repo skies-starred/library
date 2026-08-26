@@ -59,7 +59,7 @@ dependencies {
     implementation("fabric-loader".global)
     implementation("fabric-language-kotlin".global)
 
-    shadow("kommand".global)
+    implementation("kommand".global)
 }
 
 loom {
@@ -141,10 +141,3 @@ val String.global: Provider<MinimalExternalModuleDependency>
 
 val String.versioned: Provider<MinimalExternalModuleDependency>
     get() = extensions.getByType<VersionCatalogsExtension>().named("libs").findLibrary("$this-${ver.replace(".", "_")}").get()
-
-fun DependencyHandlerScope.shadow(dep: Any, config: ExternalModuleDependency.() -> Unit = {}) {
-    val d = create((dep as? Provider<*>)?.get() ?: dep) as ExternalModuleDependency
-    d.config()
-    include(d)
-    implementation(d)
-}
