@@ -13,6 +13,7 @@
     "mixins.EditBoxMixin",
     "mixins.EntityRenderDispatcherMixin",
     "mixins.PlayerMixin",
-    "mixins.StringSplitterMixin"
+    "mixins.StringSplitterMixin",
+    "mixins.compat.caxton.CaxtonRunMixin"
   ]
 }

@@ -46,7 +46,10 @@ version = "$modVer+$ver"
 base.archivesName = modId
 
 repositories {
-    maven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1")
+    fun strictMaven(url: String, vararg groups: String) = maven(url) { content { groups.forEach(::includeGroupAndSubgroups) } }
+
+    strictMaven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1", "me.djtheredstoner")
+    strictMaven("https://api.modrinth.com/maven", "maven.modrinth")
     maven("https://maven.starred.foo/releases")
 }
 
@@ -54,6 +57,8 @@ dependencies {
     minecraft("com.mojang:minecraft:$ver")
 
     localRuntime("devauth".global)
+
+    compileOnly("caxton".versioned)
 
     implementation("fabric-api".versioned)
     implementation("fabric-loader".global)

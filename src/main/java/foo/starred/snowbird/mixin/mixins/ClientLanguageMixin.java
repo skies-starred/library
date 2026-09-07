@@ -14,8 +14,9 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
 import java.util.List;
+import java.util.Optional;
 
-@Mixin(ClientLanguage.class)
+@Mixin(value = ClientLanguage.class, priority = 2000)
 public abstract class ClientLanguageMixin {
     @Unique
     private static int snowbird$last = -1;
@@ -23,10 +24,15 @@ public abstract class ClientLanguageMixin {
     @Unique
     private static final LongOpenHashSet snowbird$unmodified = new LongOpenHashSet(1024);
 
+    @Unique
+    private static final StringBuilder snowbird$sb = new StringBuilder();
+
+    @Unique
+    private static int snowbird$hash0;
+
     @ModifyReturnValue(method = "getVisualOrder(Lnet/minecraft/network/chat/FormattedText;)Lnet/minecraft/util/FormattedCharSequence;", at = @At("RETURN"))
     private FormattedCharSequence snowbird$getVisualOrder(FormattedCharSequence original, FormattedText logicalOrderText) {
-        if (original == null) return null;
-        if (!(logicalOrderText instanceof Component component)) return original;
+        if (original == null || logicalOrderText == null) return null;
 
         final int version = DonatorWords.INSTANCE.getVersion();
         if (snowbird$last != version) {
@@ -34,8 +40,8 @@ public abstract class ClientLanguageMixin {
             snowbird$last = version;
         }
 
-        final String string = component.getString();
-        final int hash0 = snowbird$hash(component);
+        final String string = snowbird$extract(logicalOrderText);
+        final int hash0 = snowbird$hash0;
         final long key = ((long) string.hashCode() << 32) | (hash0 & 0xFFFFFFFFL);
 
         if (snowbird$unmodified.contains(key)) {
@@ -48,8 +54,7 @@ public abstract class ClientLanguageMixin {
             return entry.sequence;
         }
 
-        final Component replaced = DonatorWords.INSTANCE.fn(component);
-        if (replaced == component) {
+        if (snowbird$bool(logicalOrderText, string)) {
             if (snowbird$unmodified.size() >= 4096) snowbird$unmodified.clear();
             snowbird$unmodified.add(key);
             return original;
@@ -61,6 +66,40 @@ public abstract class ClientLanguageMixin {
         entry.style = hash0;
         entry.sequence = sequence;
         return sequence;
+    }
+
+    @Unique
+    private static boolean snowbird$bool(FormattedText text, String string) {
+        boolean bool = false;
+        for (String word : DonatorWords.INSTANCE.getMap0().keySet()) {
+            if (!string.contains(word)) continue;
+
+            bool = true;
+            break;
+        }
+
+        if (!bool) return true;
+        return text instanceof Component c && DonatorWords.INSTANCE.fn(c) == c;
+    }
+
+    @Unique
+    private static String snowbird$extract(FormattedText text) {
+        if (text instanceof Component component) {
+            snowbird$hash0 = snowbird$hash(component);
+            return component.getString();
+        }
+
+        snowbird$sb.setLength(0);
+        snowbird$hash0 = 0;
+
+        text.visit((style, str) -> {
+            snowbird$sb.append(str);
+            snowbird$hash0 = 31 * snowbird$hash0 + snowbird$hash(style);
+
+            return Optional.empty();
+        }, Style.EMPTY);
+
+        return snowbird$sb.toString();
     }
 
     @Unique
