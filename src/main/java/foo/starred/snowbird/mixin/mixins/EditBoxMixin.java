@@ -2,7 +2,7 @@ package foo.starred.snowbird.mixin.mixins;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import foo.starred.snowbird.internal.misc.DonatorWords;
+import foo.starred.snowbird.internal.misc.DonatorTextReplacer;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.util.FormattedCharSequence;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,12 +27,14 @@ public class EditBoxMixin {
 
     @ModifyReturnValue(method = "applyFormat", at = @At("RETURN"))
     private FormattedCharSequence snowbird$applyFormat(FormattedCharSequence original, @Local(argsOnly = true) String text, @Local(argsOnly = true) int displayPos) {
-        final int version = DonatorWords.INSTANCE.getVersion();
+        if (!DonatorTextReplacer.enabled.getValue()) return original;
+
+        final int version = DonatorTextReplacer.INSTANCE.getVersion();
         if (displayPos == this.snowbird$position && this.snowbird$version == version && Objects.equals(text, this.snowbird$last) && this.snowbird$cached != null) return this.snowbird$cached;
 
         this.snowbird$last = text;
         this.snowbird$position = displayPos;
         this.snowbird$version = version;
-        return this.snowbird$cached = DonatorWords.INSTANCE.fn(original);
+        return this.snowbird$cached = DonatorTextReplacer.INSTANCE.fn(original);
     }
 }

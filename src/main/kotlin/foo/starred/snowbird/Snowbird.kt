@@ -3,8 +3,9 @@ package foo.starred.snowbird
 import com.google.gson.Gson
 import foo.starred.snowbird.internal.events.dispatcher.EventDispatcher
 import foo.starred.snowbird.internal.misc.DonatorSize
-import foo.starred.snowbird.internal.misc.DonatorWords
+import foo.starred.snowbird.internal.misc.DonatorTextReplacer
 import foo.starred.kommand.scopes.KommandCommandScope
+import foo.starred.snowbird.api.storage.AbstractJsonStore
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -28,6 +29,9 @@ object Snowbird : ClientModInitializer {
     @JvmField
     val COMMANDS: KommandCommandScope<FabricClientCommandSource> = KommandCommandScope()
 
+    @JvmField
+    val JSON: AbstractJsonStore = AbstractJsonStore("snowbird", "config")
+
     override fun onInitializeClient() {
         LOGGER.info("Snowbird initialising...")
 
@@ -37,7 +41,7 @@ object Snowbird : ClientModInitializer {
 
         LOGGER.debug("Initialised EventDispatcher - {}", EventDispatcher)
         LOGGER.debug("Initialised CommandLoader - {}", COMMANDS)
-        LOGGER.debug("Initialised DonatorWords - {}", DonatorWords)
+        LOGGER.debug("Initialised DonatorTextReplacer - {}", DonatorTextReplacer)
         LOGGER.debug("Initialised DonatorSize - {}", DonatorSize)
         LOGGER.info("Snowbird finished initialisation.")
     }

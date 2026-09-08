@@ -6,7 +6,7 @@ import foo.starred.kommand.scopes.KommandCommandScope
 import foo.starred.snowbird.Snowbird
 import foo.starred.snowbird.api.EMPTY_COMPONENT
 import foo.starred.snowbird.api.lie
-import foo.starred.snowbird.api.name
+import foo.starred.snowbird.api.storage.AbstractJsonStore
 import foo.starred.snowbird.api.text.parser.impl.parse
 import foo.starred.snowbird.api.text.replacer.AbstractTextReplacer
 import foo.starred.snowbird.internal.utils.mod
@@ -14,27 +14,23 @@ import foo.starred.snowbird.internal.web.WebUtils.request
 import foo.starred.snowbird.utils.literal
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.HoverEvent
 import net.minecraft.network.chat.MutableComponent
 import net.minecraft.util.FormattedCharSequence
 
-object DonatorWords : AbstractTextReplacer(), IKommand<FabricClientCommandSource> {
+object DonatorTextReplacer : AbstractTextReplacer(), IKommand<FabricClientCommandSource> {
     override val loader: KommandCommandScope<FabricClientCommandSource> = Snowbird.COMMANDS
 
-    private const val SKIP = "aerii_ds_bypass"
-
-    private val map = mutableMapOf<String, Component>()
-    private var bool: Boolean = false
+    @JvmField
+    var enabled: AbstractJsonStore.Value<Boolean> = Snowbird.JSON.boolean("donatorName", true)
 
     init {
-        skips = SKIP
+        skips = "snowbird_dts_bypass"
 
         "https://data.starred.foo/donor/names".request {
             success<JsonObject> { json ->
-                map.clear()
-
                 for ((k, v) in json.entrySet()) {
-                    val a = v.asString.parse()
-                    map[k] = a
+                    val a = v.asString.parse().withStyle { it.withHoverEvent(HoverEvent.ShowText("<gray>IGN: <red>$k".parse().skip())) }
                     put(k, a.string, a, a.visualOrderText)
                 }
 
@@ -44,32 +40,9 @@ object DonatorWords : AbstractTextReplacer(), IKommand<FabricClientCommandSource
 
         command("snowbird") {
             "name" / "toggle" {
-                val a = name
-                val b = map[a] ?: return@invoke "<red>You don't have a custom name!".mod()
-                val c = map1.contains(a)
-
-                if (c) remove(a) else put(a, b.string, b, b.visualOrderText)
-                build()
-                "${if (c) "<red>Disabled" else "<green>Enabled"}<r> custom name! Run this command again to ${if (c) "<green>enable" else "<red>disable"}<r> it.".mod()
-            }
-
-            "name" / "toggle" / "all" {
-                val a = map.keys.any(map1::contains)
-
-                if (!bool && a) {
-                    "Are you sure you want to <red>disable ALL donator names?<r> Run this command again to confirm :(".mod()
-                    bool = true
-                    return@invoke
-                }
-
-                for ((k, v) in map) {
-                    if (a) remove(k)
-                    else put(k, v.string, v, v.visualOrderText)
-                }
-
-                build()
-                bool = false
-                "${if (a) "<red>Disabled" else "<green>Enabled"}<r> all donator names. Run this command again to ${if (a) "<green>enable" else "<red>disable"}<r> them.".mod()
+                val bool = enabled.value
+                enabled.value = !bool
+                "${if (bool) "<red>Disabled" else "<green>Enabled"}<r> all donator names. Run this command again to ${if (bool) "<green>enable" else "<red>disable"}<r> them.".mod()
             }
 
             "name" / "list" {
@@ -97,7 +70,7 @@ object DonatorWords : AbstractTextReplacer(), IKommand<FabricClientCommandSource
     }
 
     private fun MutableComponent.skip(): MutableComponent {
-        return copy().withStyle(style.withInsertion(SKIP))
+        return copy().withStyle(style.withInsertion("snowbird_dts_bypass"))
     }
 
     private fun FormattedCharSequence.toComponent(): Component {

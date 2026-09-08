@@ -2,7 +2,7 @@ package foo.starred.snowbird.mixin.mixins;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import foo.starred.snowbird.api.text.replacer.AbstractTextReplacer;
-import foo.starred.snowbird.internal.misc.DonatorWords;
+import foo.starred.snowbird.internal.misc.DonatorTextReplacer;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import net.minecraft.client.resources.language.ClientLanguage;
 import net.minecraft.network.chat.Component;
@@ -32,9 +32,11 @@ public abstract class ClientLanguageMixin {
 
     @ModifyReturnValue(method = "getVisualOrder(Lnet/minecraft/network/chat/FormattedText;)Lnet/minecraft/util/FormattedCharSequence;", at = @At("RETURN"))
     private FormattedCharSequence snowbird$getVisualOrder(FormattedCharSequence original, FormattedText logicalOrderText) {
-        if (original == null || logicalOrderText == null) return null;
+        if (original == null) return null;
+        if (logicalOrderText == null) return null;
+        if (!DonatorTextReplacer.enabled.getValue()) return original;
 
-        final int version = DonatorWords.INSTANCE.getVersion();
+        final int version = DonatorTextReplacer.INSTANCE.getVersion();
         if (snowbird$last != version) {
             snowbird$unmodified.clear();
             snowbird$last = version;
@@ -49,7 +51,7 @@ public abstract class ClientLanguageMixin {
         }
 
         final int hash1 = (string.hashCode() ^ hash0) & 4095;
-        final AbstractTextReplacer.Companion.Entry entry = DonatorWords.INSTANCE.getEntries()[hash1];
+        final AbstractTextReplacer.Companion.Entry entry = DonatorTextReplacer.INSTANCE.getEntries()[hash1];
         if (entry.version == version && entry.style == hash0 && string.equals(entry.string)) {
             return entry.sequence;
         }
@@ -60,7 +62,7 @@ public abstract class ClientLanguageMixin {
             return original;
         }
 
-        final FormattedCharSequence sequence = DonatorWords.INSTANCE.fn(original);
+        final FormattedCharSequence sequence = DonatorTextReplacer.INSTANCE.fn(original);
         entry.version = version;
         entry.string = string;
         entry.style = hash0;
@@ -71,7 +73,7 @@ public abstract class ClientLanguageMixin {
     @Unique
     private static boolean snowbird$bool(FormattedText text, String string) {
         boolean bool = false;
-        for (String word : DonatorWords.INSTANCE.getMap0().keySet()) {
+        for (String word : DonatorTextReplacer.INSTANCE.getMap0().keySet()) {
             if (!string.contains(word)) continue;
 
             bool = true;
@@ -79,7 +81,7 @@ public abstract class ClientLanguageMixin {
         }
 
         if (!bool) return true;
-        return text instanceof Component c && DonatorWords.INSTANCE.fn(c) == c;
+        return text instanceof Component c && DonatorTextReplacer.INSTANCE.fn(c) == c;
     }
 
     @Unique

@@ -2,7 +2,7 @@ package foo.starred.snowbird.mixin.mixins;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import foo.starred.snowbird.api.text.replacer.AbstractTextReplacer;
-import foo.starred.snowbird.internal.misc.DonatorWords;
+import foo.starred.snowbird.internal.misc.DonatorTextReplacer;
 import net.minecraft.client.StringSplitter;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
@@ -33,13 +33,14 @@ public abstract class StringSplitterMixin {
     @ModifyReturnValue(method = "stringWidth(Lnet/minecraft/network/chat/FormattedText;)F", at = @At("RETURN"))
     private float snowbird$stringWidth(float original, FormattedText text) {
         if (text == null) return original;
+        if (!DonatorTextReplacer.enabled.getValue()) return original;
 
         final String string = snowbird$extract(text);
         final int hash0 = snowbird$hash0;
         final int hash1 = (string.hashCode() ^ hash0) & 4095;
 
-        final int version = DonatorWords.INSTANCE.getVersion();
-        final AbstractTextReplacer.Companion.Entry entry = DonatorWords.INSTANCE.getEntries()[hash1];
+        final int version = DonatorTextReplacer.INSTANCE.getVersion();
+        final AbstractTextReplacer.Companion.Entry entry = DonatorTextReplacer.INSTANCE.getEntries()[hash1];
 
         if (entry.version != version || entry.style != hash0 || !string.equals(entry.string)) {
             return original;
