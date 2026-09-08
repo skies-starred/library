@@ -10,7 +10,6 @@ import net.minecraft.client.gui.components.ChatComponent
 val client: Minecraft =
     Minecraft.getInstance()
 
-@JvmName("getClient2")
 @Deprecated("Use client.", ReplaceWith("client"))
 fun getClient(): Minecraft {
     return client
