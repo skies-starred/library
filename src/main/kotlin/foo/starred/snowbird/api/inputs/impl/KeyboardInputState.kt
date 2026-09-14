@@ -12,8 +12,18 @@ object KeyboardInputState : IInputState {
         return InputConstants.isKeyDown(key.value)
     }
 
-    fun pressed(int: Int): Boolean {
-        //~ if >= 26.3 'isKeyDown(client.window, int)' -> 'isKeyDown(int)'
-        return InputConstants.isKeyDown(int)
+    fun vanilla(key: Int): InputConstants.Key {
+        //~ if >= 26.3 'KEYSYM' -> 'KEYBOARD'
+        return InputConstants.Type.KEYBOARD.getOrCreate(key)
+    }
+
+    object States {
+        fun shift(): Boolean {
+            return pressed(vanilla(InputConstants.KEY_LSHIFT)) || pressed(vanilla(InputConstants.KEY_RSHIFT))
+        }
+
+        fun control(): Boolean {
+            return pressed(vanilla(InputConstants.KEY_LCONTROL)) || pressed(vanilla(InputConstants.KEY_RCONTROL))
+        }
     }
 }

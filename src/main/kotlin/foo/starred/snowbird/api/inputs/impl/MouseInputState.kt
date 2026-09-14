@@ -19,13 +19,8 @@ object MouseInputState : IInputState {
         *///? }
     }
 
-    fun pressed(int: Int): Boolean {
-        //? if >= 26.3 {
-        return SDLMouse.SDL_GetMouseState(null, null) and (1 shl (int - 1)) != 0
-        //? } else {
-        /*val a = GLFW.glfwGetMouseButton(client.window.handle(), int)
-        return a == GLFW.GLFW_PRESS || a == GLFW.GLFW_REPEAT
-        *///? }
+    fun vanilla(key: Int): InputConstants.Key {
+        return InputConstants.Type.MOUSE.getOrCreate(key)
     }
 
     object Position {

@@ -27,14 +27,4 @@ object GenericInputState : IInputState {
     fun bound(key: Int): Boolean {
         return key != InputConstants.UNKNOWN.value
     }
-
-    object States {
-        fun shift(): Boolean {
-            return KeyboardInputState.pressed(InputConstants.KEY_LSHIFT) || KeyboardInputState.pressed(InputConstants.KEY_RSHIFT)
-        }
-
-        fun control(): Boolean {
-            return KeyboardInputState.pressed(InputConstants.KEY_LCONTROL) || KeyboardInputState.pressed(InputConstants.KEY_RCONTROL)
-        }
-    }
 }
