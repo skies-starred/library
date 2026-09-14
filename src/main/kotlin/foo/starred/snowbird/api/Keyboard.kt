@@ -10,7 +10,13 @@ val Int.bound: Boolean
 
 @Deprecated("Use GenericInputState.pressed()")
 val Int.pressed: Boolean
-    get() = GenericInputState.pressed(this)
+    get() {
+        return when {
+            !GenericInputState.bound(this) -> false
+            this > 7 -> KeyboardInputState.pressed(this)
+            else -> MouseInputState.pressed(this)
+        }
+    }
 
 @Deprecated("Use KeyboardInputState.pressed()")
 val Int.keyed: Boolean

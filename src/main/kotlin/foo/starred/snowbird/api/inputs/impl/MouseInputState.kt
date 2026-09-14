@@ -1,5 +1,6 @@
 package foo.starred.snowbird.api.inputs.impl
 
+import com.mojang.blaze3d.platform.InputConstants
 import foo.starred.snowbird.api.inputs.base.IInputState
 //~ if >= 26.3 'glfw.GLFW' -> 'sdl.SDLMouse'
 import org.lwjgl.sdl.SDLMouse
@@ -8,11 +9,20 @@ import org.lwjgl.sdl.SDLMouse
 //import foo.starred.snowbird.api.client
 
 object MouseInputState : IInputState {
-    override fun pressed(key: Int): Boolean {
+    override fun pressed(key: InputConstants.Key): Boolean {
         //? if >= 26.3 {
-        return SDLMouse.SDL_GetMouseState(null, null) and (1 shl (key - 1)) != 0
+        return SDLMouse.SDL_GetMouseState(null, null) and (1 shl (key.value - 1)) != 0
         //? } else {
-        /*val a = GLFW.glfwGetMouseButton(client.window.handle(), key)
+        /*val a = GLFW.glfwGetMouseButton(client.window.handle(), key.value)
+        return a == GLFW.GLFW_PRESS || a == GLFW.GLFW_REPEAT
+        *///? }
+    }
+
+    fun pressed(int: Int): Boolean {
+        //? if >= 26.3 {
+        return SDLMouse.SDL_GetMouseState(null, null) and (1 shl (int - 1)) != 0
+        //? } else {
+        /*val a = GLFW.glfwGetMouseButton(client.window.handle(), int)
         return a == GLFW.GLFW_PRESS || a == GLFW.GLFW_REPEAT
         *///? }
     }
