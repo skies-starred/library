@@ -2,21 +2,25 @@
 
 package foo.starred.snowbird.utils
 
-import foo.starred.snowbird.api.client
-import kotlin.math.max
+import foo.starred.snowbird.api.inputs.impl.MouseInputState
 
+@Deprecated("Use MouseInputState.Position")
 val mouseRX: Float
-    get() = client.mouseHandler.xpos().toFloat()
+    get() = MouseInputState.Position.Raw.x
 
+@Deprecated("Use MouseInputState.Position")
 val mouseRY: Float
-    get() = client.mouseHandler.ypos().toFloat()
+    get() = MouseInputState.Position.Raw.y
 
+@Deprecated("Use MouseInputState.Position")
 val mouseSX: Float
-    get() = mouseRX * client.window.guiScaledWidth / max(1, client.window.width)
+    get() = MouseInputState.Position.Scaled.x
 
+@Deprecated("Use MouseInputState.Position")
 val mouseSY: Float
-    get() = mouseRY * client.window.guiScaledHeight / max(1, client.window.height)
+    get() = MouseInputState.Position.Scaled.y
 
+@Deprecated("Deprecated")
 fun hovered(x: Number, y: Number, w: Number, h: Number, scaled: Boolean = false): Boolean {
     val x = x.toFloat()
     val y = y.toFloat()

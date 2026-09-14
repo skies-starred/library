@@ -1,6 +1,7 @@
 package foo.starred.snowbird.api.inputs.impl
 
 import com.mojang.blaze3d.platform.InputConstants
+import foo.starred.snowbird.api.client
 import foo.starred.snowbird.api.inputs.base.IInputState
 //~ if >= 26.3 'glfw.GLFW' -> 'sdl.SDLMouse'
 import org.lwjgl.sdl.SDLMouse
@@ -25,5 +26,23 @@ object MouseInputState : IInputState {
         /*val a = GLFW.glfwGetMouseButton(client.window.handle(), int)
         return a == GLFW.GLFW_PRESS || a == GLFW.GLFW_REPEAT
         *///? }
+    }
+
+    object Position {
+        object Raw {
+            val x: Float
+                get() = client.mouseHandler.xpos().toFloat()
+
+            val y: Float
+                get() = client.mouseHandler.ypos().toFloat()
+        }
+
+        object Scaled {
+            val x: Float
+                get() = client.mouseHandler.getScaledXPos(client.window).toFloat()
+
+            val y: Float
+                get() = client.mouseHandler.getScaledYPos(client.window).toFloat()
+        }
     }
 }
