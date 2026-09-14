@@ -3,7 +3,13 @@
 package foo.starred.snowbird.utils
 
 import net.minecraft.network.chat.Component
-import net.minecraft.util.Util
+
+//? if >= 26.3 {
+import com.mojang.blaze3d.Blaze3D
+import java.net.URI
+//? } else {
+/*import net.minecraft.util.Util
+*///? }
 
 val DURATION_REGEX = Regex("""(\d+(?:\.\d+)?)([dhms])""")
 val LONG_DURATION_REGEX = Regex("""(\d+(?:\.\d+)?)\s+(day|days|hour|hours|minute|minutes|second|seconds)""")
@@ -47,5 +53,9 @@ fun Int.plural(w1: String, w2: String): String {
 }
 
 fun String.open() {
-    Util.getPlatform().openUri(this)
+    //? if >= 26.3 {
+    Blaze3D.openUri(URI(this))
+    //? } else {
+    /*Util.getPlatform().openUri(this)
+    *///? }
 }

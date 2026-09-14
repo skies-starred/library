@@ -3,11 +3,17 @@ plugins {
     alias(libs.plugins.loom) apply false
 }
 
-stonecutter active "26.2"
+stonecutter active "26.3"
+
+val mod = extensions.getByType<VersionCatalogsExtension>().named("mod")
 
 stonecutter parameters {
-    swaps["mod_version"] = "\"" + property("mod.version") + "\""
-    swaps["mod_id"] = "\"" + property("mod.id") + "\""
-    swaps["mod_name"] = "\"" + property("mod.name") + "\""
-    swaps["minecraft"] = "\"" + node.metadata.version + "\""
+    swaps["mod_version"] = "\"${mod("version")}\""
+    swaps["mod_id"] = "\"${mod("id")}\""
+    swaps["mod_name"] = "\"${mod("name")}\""
+    swaps["minecraft"] = "\"${node.metadata.version}\""
+}
+
+operator fun VersionCatalog.invoke(name: String): String {
+    return findVersion(name).get().requiredVersion
 }

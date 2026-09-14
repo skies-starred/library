@@ -2,7 +2,7 @@
 
 package foo.starred.snowbird.internal.events.core
 
-import foo.starred.snowbird.handlers.Observable
+import foo.starred.snowbird.api.data.Observable
 import java.util.concurrent.atomic.AtomicBoolean
 
 internal class Node<T : Event>(

@@ -1,0 +1,5 @@
+[versions]
+id = "snowbird"
+name = "Snowbird"
+version = "021"
+group = "foo.starred"

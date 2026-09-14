@@ -2,7 +2,7 @@
 
 package foo.starred.snowbird.api
 
-import foo.starred.snowbird.handlers.Observable
+import foo.starred.snowbird.api.data.Observable
 import net.minecraft.network.chat.Component
 import net.minecraft.world.phys.AABB
 import java.util.*

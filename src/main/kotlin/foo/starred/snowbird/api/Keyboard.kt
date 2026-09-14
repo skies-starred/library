@@ -1,31 +1,29 @@
 package foo.starred.snowbird.api
 
-import org.lwjgl.glfw.GLFW
+import foo.starred.snowbird.api.inputs.impl.GenericInputState
+import foo.starred.snowbird.api.inputs.impl.KeyboardInputState
+import foo.starred.snowbird.api.inputs.impl.MouseInputState
 
+@Deprecated("Use GenericInputState.bound()")
 val Int.bound: Boolean
-    get() = this != -1
+    get() = GenericInputState.bound(this)
 
+@Deprecated("Use GenericInputState.pressed()")
 val Int.pressed: Boolean
-    get() = when {
-        !bound -> false
-        this > 7 -> keyed
-        else -> moused
-    }
+    get() = GenericInputState.pressed(this)
 
+@Deprecated("Use KeyboardInputState.pressed()")
 val Int.keyed: Boolean
-    get() {
-        val a = GLFW.glfwGetKey(client.window.handle(), this)
-        return a == GLFW.GLFW_PRESS || a == GLFW.GLFW_REPEAT
-    }
+    get() = KeyboardInputState.pressed(this)
 
+@Deprecated("Use MouseInputState.pressed()")
 val Int.moused: Boolean
-    get() {
-        val a = GLFW.glfwGetMouseButton(client.window.handle(), this)
-        return a == GLFW.GLFW_PRESS || a == GLFW.GLFW_REPEAT
-    }
+    get() = MouseInputState.pressed(this)
 
+@Deprecated("Use GenericInputState.States.shift()")
 val shift: Boolean
-    get() = GLFW.GLFW_KEY_LEFT_SHIFT.keyed || GLFW.GLFW_KEY_RIGHT_SHIFT.keyed
+    get() = GenericInputState.States.shift()
 
+@Deprecated("Use GenericInputState.States.control()")
 val ctrl: Boolean
-    get() = GLFW.GLFW_KEY_LEFT_CONTROL.keyed || GLFW.GLFW_KEY_RIGHT_CONTROL.keyed
+    get() = GenericInputState.States.control()

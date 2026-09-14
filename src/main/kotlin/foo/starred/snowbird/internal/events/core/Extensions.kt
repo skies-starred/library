@@ -2,7 +2,7 @@
 
 package foo.starred.snowbird.internal.events.core
 
-import foo.starred.snowbird.handlers.Observable
+import foo.starred.snowbird.api.data.Observable
 
 internal inline fun <reified T : Event> on(
     priority: Int = 0,

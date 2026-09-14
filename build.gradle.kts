@@ -1,41 +1,35 @@
-@file:Suppress("UnstableApiUsage")
-
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.loom)
     `maven-publish`
 }
 
-val ver = stonecutter.current.version
-val modId = project.property("mod.id").toString()
-val modName = project.property("mod.name").toString()
-val modVer = project.property("mod.version").toString()
+val catalogs = extensions.getByType<VersionCatalogsExtension>()
+val minecraft = stonecutter.current.version
+val lib = catalogs.named("libs${minecraft.replace(".", "")}")
+val mod = catalogs.named("mod")
 
-version = "$modVer+$ver"
-base.archivesName = modId
+version = "${mod("version")}+$minecraft"
+group = mod("group")
+base.archivesName = mod("id")
 
 repositories {
-    fun strictMaven(url: String, vararg groups: String) = maven(url) { content { groups.forEach(::includeGroupAndSubgroups) } }
-
-    strictMaven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1", "me.djtheredstoner")
-    strictMaven("https://api.modrinth.com/maven", "maven.modrinth")
+    maven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1")
+    maven("https://api.modrinth.com/maven")
     maven("https://maven.starred.foo/releases")
 }
 
 dependencies {
-    minecraft("com.mojang:minecraft:$ver")
+    minecraft(lib["minecraft"])
 
-    localRuntime("devauth".global)
+    localRuntime(libs.devauth)
+    compileOnly(lib["caxton"])
 
-    compileOnly("caxton".versioned)
+    implementation(lib["fabric-api"])
+    implementation(libs.fabric.loader)
+    implementation(libs.fabric.language.kotlin)
 
-    implementation("fabric-api".versioned)
-    implementation("fabric-loader".global)
-    implementation("fabric-language-kotlin".global)
-
-    implementation("kommand".global)
+    implementation(libs.kommand)
 }
 
 loom {
@@ -56,9 +50,13 @@ loom {
     }
 }
 
+java {
+    withSourcesJar()
+}
+
 publishing {
     repositories {
-        val a = if (Regex("-b[0-9]*$") in modVer) "snapshots" else "releases"
+        val a = if (Regex("-b[0-9]*$") in mod("version")) "snapshots" else "releases"
         maven("https://maven.starred.foo/$a") {
             name = "starred"
             credentials {
@@ -70,34 +68,17 @@ publishing {
 
     publications {
         create<MavenPublication>("maven") {
-            groupId = "foo.starred"
-            artifactId = modId
-            version = "$modVer+$ver"
+            groupId = mod("group")
+            artifactId = mod("id")
+            version = "${mod("version")}+$minecraft"
             from(components["java"])
         }
     }
 }
 
-tasks.withType<JavaCompile>().configureEach {
-    options.release.set(25)
-}
-
-java {
-    toolchain.languageVersion = JavaLanguageVersion.of(25)
-    withSourcesJar()
-}
-
-kotlin {
-    jvmToolchain(25)
-
-    compilerOptions {
-        jvmTarget.set(JvmTarget.valueOf("JVM_25"))
-    }
-}
-
 tasks {
     processResources {
-        val r = mapOf("id" to modId, "name" to modName, "version" to modVer, "minecraft" to project.property("mod.mc_dep"))
+        val r = mapOf("id" to mod("id"), "name" to mod("name"), "version" to mod("version"), "minecraft" to lib("compatibility"))
 
         inputs.properties(r)
         filesMatching("fabric.mod.json") { expand(r) }
@@ -107,13 +88,15 @@ tasks {
         description = "Builds and collects mod jars."
         group = "build"
         from(jar, kotlinSourcesJar)
-        into(rootProject.layout.buildDirectory.file("libs/${project.property("mod.version")}"))
+        into(rootProject.layout.buildDirectory.file("libs/${mod("version")}"))
         dependsOn("build")
     }
 }
 
-val String.global: Provider<MinimalExternalModuleDependency>
-    get() = extensions.getByType<VersionCatalogsExtension>().named("libs").findLibrary(this).get()
+operator fun VersionCatalog.get(name: String): Provider<MinimalExternalModuleDependency> {
+    return findLibrary(name).get()
+}
 
-val String.versioned: Provider<MinimalExternalModuleDependency>
-    get() = extensions.getByType<VersionCatalogsExtension>().named("libs").findLibrary("$this-${ver.replace(".", "_")}").get()
+operator fun VersionCatalog.invoke(name: String): String {
+    return findVersion(name).get().requiredVersion
+}
