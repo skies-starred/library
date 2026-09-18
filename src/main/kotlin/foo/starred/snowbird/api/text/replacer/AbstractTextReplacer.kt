@@ -71,20 +71,20 @@ abstract class AbstractTextReplacer {
         val queue = ArrayDeque<Node>(n * 4)
 
         for (i in 0 until n) {
-            val cps = ia[i]
-            var cur = root
+            val i0 = ia[i]
+            var i1 = root
 
-            for (j in cps.indices) {
-                var child = cur.goto.get(cps[j])
+            for (j in i0.indices) {
+                var child = i1.goto.get(i0[j])
                 if (child == null) {
                     child = Node()
-                    cur.goto.put(cps[j], child)
+                    i1.goto.put(i0[j], child)
                 }
 
-                cur = child
+                i1 = child
             }
 
-            cur.output = i
+            i1.output = i
         }
 
         root.fail = root
@@ -94,10 +94,10 @@ abstract class AbstractTextReplacer {
         }
 
         while (queue.isNotEmpty()) {
-            val cur = queue.removeFirst()
-            val fail = cur.fail!!
+            val current = queue.removeFirst()
+            val fail = current.fail!!
 
-            for (entry in cur.goto.int2ObjectEntrySet()) {
+            for (entry in current.goto.int2ObjectEntrySet()) {
                 val child = entry.value
 
                 child.fail = fail.goto.get(entry.intKey) ?: root
@@ -107,7 +107,7 @@ abstract class AbstractTextReplacer {
             }
 
             for (entry in fail.goto.int2ObjectEntrySet()) {
-                cur.goto.putIfAbsent(entry.intKey, entry.value)
+                current.goto.putIfAbsent(entry.intKey, entry.value)
             }
         }
     }
@@ -118,34 +118,40 @@ abstract class AbstractTextReplacer {
         val len = input.length
         if (len == 0) return input
 
-        val sb = StringBuilder(len + 32)
-        val b = IntArray(len)
-        var bl = 0
-        var i = 0
-        var state = root
+        val builder = StringBuilder(len + 32)
+        val array = IntArray(len)
+        var i0 = 0
+        var i1 = 0
 
-        while (i < len) {
-            val cp = input.codePointAt(i)
+        var state = root
+        while (i1 < len) {
+            val cp = input.codePointAt(i1)
             state = state.goto.get(cp) ?: root
 
-            b[bl] = cp
-            bl++
+            array[i0] = cp
+            i0++
 
             if (state.output >= 0) {
                 val idx = state.output
-                bl -= ia[idx].size
+                i0 -= ia[idx].size
 
-                for (j in 0..<bl) sb.appendCodePoint(b[j])
-                sb.append(r0[idx])
-                bl = 0
+                for (i2 in 0..<i0) {
+                    builder.appendCodePoint(array[i2])
+                }
+
+                builder.append(r0[idx])
+                i0 = 0
                 state = root
             }
 
-            i += Character.charCount(cp)
+            i1 += Character.charCount(cp)
         }
 
-        for (j in 0..<bl) sb.appendCodePoint(b[j])
-        return sb.toString()
+        for (j in 0..<i0) {
+            builder.appendCodePoint(array[j])
+        }
+
+        return builder.toString()
     }
 
     fun fn(input: Component): Component {
@@ -156,9 +162,10 @@ abstract class AbstractTextReplacer {
         var size = 0
 
         input.visit({ style, str ->
-            for (cp in str.codePoints()) {
+            for (i in str.codePoints()) {
                 if (size >= chars.size) chars = chars.copyOf(chars.size * 2)
-                chars[size] = cp
+
+                chars[size] = i
                 styles.add(style)
                 size++
             }
@@ -174,20 +181,19 @@ abstract class AbstractTextReplacer {
         val bool = skip != null
         val result = "".literal()
 
-        val b = IntArray(size)
-        val bs = arrayOfNulls<Style>(size)
-        var bl = 0
-        var i = 0
-        var state = root
+        val array0 = IntArray(size)
+        val array1 = arrayOfNulls<Style>(size)
+        var i0 = 0
+        var i1 = 0
 
         fun flush() {
             var j = 0
-            while (j < bl) {
-                val style = bs[j]!!
+            while (j < i0) {
+                val style = array1[j]!!
                 val sb = StringBuilder()
 
-                while (j < bl && bs[j] === style) {
-                    sb.appendCodePoint(b[j])
+                while (j < i0 && array1[j] === style) {
+                    sb.appendCodePoint(array0[j])
                     j++
                 }
 
@@ -195,33 +201,34 @@ abstract class AbstractTextReplacer {
             }
         }
 
+        var state = root
         var bool1 = false
-        while (i < size) {
-            if (bool && styles[i].insertion == skip) {
+        while (i1 < size) {
+            if (bool && styles[i1].insertion == skip) {
                 flush()
-                bl = 0
+                i0 = 0
                 state = root
-                result.append(Character.toString(chars[i]).literal().withStyle(styles[i]))
-                i++
+                result.append(Character.toString(chars[i1]).literal().withStyle(styles[i1]))
+                i1++
                 continue
             }
 
-            state = state.goto.get(chars[i]) ?: root
+            state = state.goto.get(chars[i1]) ?: root
 
-            b[bl] = chars[i]
-            bs[bl] = styles[i]
-            bl++
+            array0[i0] = chars[i1]
+            array1[i0] = styles[i1]
+            i0++
 
             if (state.output >= 0) {
                 bool1 = true
-                bl -= ia[state.output].size
+                i0 -= ia[state.output].size
                 flush()
                 result.append(r1[state.output])
-                bl = 0
+                i0 = 0
                 state = root
             }
 
-            i++
+            i1++
         }
 
         if (!bool1) {
@@ -253,51 +260,66 @@ abstract class AbstractTextReplacer {
         val bool = skip != null
 
         return FormattedCharSequence { sink ->
-            val s = IntArray(size)
-            val bs = arrayOfNulls<Style>(size)
-            var bl = 0
-            var i = 0
+            val array0 = IntArray(size)
+            val array1 = arrayOfNulls<Style>(size)
+            var i0 = 0
+            var i1 = 0
+            var i2 = 0
+
             var state = root
+            while (i1 < size) {
+                if (bool && styles[i1].insertion == skip) {
+                    for (j in 0..<i0) {
+                        if (sink.accept(i2++, array1[j]!!, array0[j])) continue
+                        return@FormattedCharSequence false
+                    }
 
-            while (i < size) {
-                if (bool && styles[i].insertion == skip) {
-                    for (j in 0..<bl) sink.accept(0, bs[j]!!, s[j])
-
-                    bl = 0
+                    i0 = 0
                     state = root
 
-                    sink.accept(0, styles[i], chars[i])
-                    i++
+                    if (!sink.accept(i2++, styles[i1], chars[i1])) {
+                        return@FormattedCharSequence false
+                    }
+
+                    i1++
                     continue
                 }
 
-                state = state.goto.get(chars[i]) ?: root
-
-                s[bl] = chars[i]
-                bs[bl] = styles[i]
-                bl++
+                state = state.goto.get(chars[i1]) ?: root
+                array0[i0] = chars[i1]
+                array1[i0] = styles[i1]
+                i0++
 
                 if (state.output >= 0) {
-                    val io = state.output
-                    val ml = ia[io].size
-                    val ms = bl - ml
+                    val i3 = state.output
+                    val i4 = ia[i3].size
+                    val i5 = i0 - i4
 
-                    for (j in 0..<ms) sink.accept(0, bs[j]!!, s[j])
-
-                    val bss = bs[ms]!!
-                    r2[io].accept { _, repStyle, repCp ->
-                        sink.accept(0, repStyle.applyTo(bss), repCp)
-                        true
+                    for (i6 in 0..<i5) {
+                        if (sink.accept(i2++, array1[i6]!!, array0[i6])) continue
+                        return@FormattedCharSequence false
                     }
 
-                    bl = 0
+                    val style1 = array1[i5]!!
+                    val bool1 = r2[i3].accept { _, style, codepoint ->
+                        sink.accept(i2++, style.applyTo(style1), codepoint)
+                    }
+
+                    if (!bool1) {
+                        return@FormattedCharSequence false
+                    }
+
+                    i0 = 0
                     state = root
                 }
 
-                i++
+                i1++
             }
 
-            for (j in 0..<bl) sink.accept(0, bs[j]!!, s[j])
+            for (i4 in 0..<i0) {
+                if (sink.accept(i2++, array1[i4]!!, array0[i4])) continue
+                return@FormattedCharSequence false
+            }
 
             true
         }
