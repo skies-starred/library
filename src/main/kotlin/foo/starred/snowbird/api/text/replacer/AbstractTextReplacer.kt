@@ -270,17 +270,13 @@ abstract class AbstractTextReplacer {
             while (i1 < size) {
                 if (bool && styles[i1].insertion == skip) {
                     for (j in 0..<i0) {
-                        if (sink.accept(i2++, array1[j]!!, array0[j])) continue
-                        return@FormattedCharSequence false
+                        sink.accept(i2++, array1[j]!!, array0[j])
                     }
 
                     i0 = 0
                     state = root
 
-                    if (!sink.accept(i2++, styles[i1], chars[i1])) {
-                        return@FormattedCharSequence false
-                    }
-
+                    sink.accept(i2++, styles[i1], chars[i1])
                     i1++
                     continue
                 }
@@ -296,17 +292,12 @@ abstract class AbstractTextReplacer {
                     val i5 = i0 - i4
 
                     for (i6 in 0..<i5) {
-                        if (sink.accept(i2++, array1[i6]!!, array0[i6])) continue
-                        return@FormattedCharSequence false
+                        sink.accept(i2++, array1[i6]!!, array0[i6])
                     }
 
                     val style1 = array1[i5]!!
-                    val bool1 = r2[i3].accept { _, style, codepoint ->
+                    r2[i3].accept { _, style, codepoint ->
                         sink.accept(i2++, style.applyTo(style1), codepoint)
-                    }
-
-                    if (!bool1) {
-                        return@FormattedCharSequence false
                     }
 
                     i0 = 0
@@ -317,8 +308,7 @@ abstract class AbstractTextReplacer {
             }
 
             for (i4 in 0..<i0) {
-                if (sink.accept(i2++, array1[i4]!!, array0[i4])) continue
-                return@FormattedCharSequence false
+                sink.accept(i2++, array1[i4]!!, array0[i4])
             }
 
             true
