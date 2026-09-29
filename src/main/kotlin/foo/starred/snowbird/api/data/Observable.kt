@@ -2,15 +2,16 @@
 
 package foo.starred.snowbird.api.data
 
+import foo.starred.kbus.base.IReactiveProperty
 import kotlinx.atomicfu.atomic
 import java.util.concurrent.CopyOnWriteArrayList
 
-class Observable<T>(initial: T) {
+class Observable<T>(initial: T) : IReactiveProperty<T> {
     private val state = atomic(initial)
     private val immutable = atomic(false)
     private val listeners = CopyOnWriteArrayList<(T) -> Unit>()
 
-    var value: T
+    override var value: T
         get() = state.value
         set(new) {
             if (immutable.value) throw UnsupportedOperationException("Reactive value is set as immutable.")
@@ -22,8 +23,13 @@ class Observable<T>(initial: T) {
             }
         }
 
-    fun onChange(callback: (T) -> Unit) = apply {
+    override fun observe(callback: (T) -> Unit) = apply {
         listeners.add(callback)
+    }
+
+    @Deprecated("Use observe", ReplaceWith("observe(callback)"))
+    fun onChange(callback: (T) -> Unit) = apply {
+        observe(callback)
     }
 
     fun immutable() = apply {
@@ -32,7 +38,7 @@ class Observable<T>(initial: T) {
 
     fun <R> map(transform: (T) -> R): Observable<R> {
         val mapped = Observable(transform(value))
-        onChange { mapped.value = transform(it) }
+        observe { mapped.value = transform(it) }
         return mapped
     }
 
@@ -40,21 +46,21 @@ class Observable<T>(initial: T) {
         val combined = Observable(transform(value, other.value))
         val update = { combined.value = transform(this.value, other.value) }
 
-        onChange { update() }
-        other.onChange { update() }
+        observe { update() }
+        other.observe { update() }
 
         return combined
     }
 
     fun filter(predicate: (T) -> Boolean): Observable<T> {
         val filtered = Observable(value)
-        onChange { if (predicate(it)) filtered.value = it }
+        observe { if (predicate(it)) filtered.value = it }
         return filtered
     }
 
     fun scan(initial: T, operation: (acc: T, value: T) -> T): Observable<T> {
         val scanned = Observable(initial)
-        onChange { scanned.value = operation(scanned.value, it) }
+        observe { scanned.value = operation(scanned.value, it) }
         return scanned
     }
 
