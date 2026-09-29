@@ -7,9 +7,10 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.mojang.serialization.Codec
+import foo.starred.kbus.extensions.on
 import foo.starred.snowbird.Snowbird
 import foo.starred.snowbird.internal.events.GameEvent
-import foo.starred.snowbird.internal.events.core.on
+import foo.starred.snowbird.internal.events.core.SnowbirdEventBus
 import foo.starred.snowbird.utils.asJsonObjectOrNull
 import foo.starred.snowbird.utils.deserialize
 import foo.starred.snowbird.utils.safely
@@ -31,7 +32,7 @@ open class AbstractJsonStore(private val name: String, private val path: String,
     private var dirty = false
 
     init {
-        on<GameEvent.Stop> {
+        SnowbirdEventBus.on<GameEvent.Stop> {
             scope.launch {
                 job?.cancelAndJoin()
                 save()

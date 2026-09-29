@@ -30,6 +30,7 @@ dependencies {
     implementation(libs.fabric.language.kotlin)
 
     implementation(libs.kommand)
+    implementation(libs.kbus)
 }
 
 loom {
