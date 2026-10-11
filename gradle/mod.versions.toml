@@ -1,5 +1,5 @@
 [versions]
 id = "snowbird"
 name = "Snowbird"
-version = "2026.09.4"
+version = "2026.10.1"
 group = "foo.starred"
