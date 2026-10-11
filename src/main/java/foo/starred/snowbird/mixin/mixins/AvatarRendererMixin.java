@@ -3,8 +3,10 @@ package foo.starred.snowbird.mixin.mixins;
 import com.mojang.blaze3d.vertex.PoseStack;
 import foo.starred.snowbird.internal.ducks.AvatarRenderStateDuck;
 import foo.starred.snowbird.internal.ducks.PlayerDuck;
+import foo.starred.snowbird.internal.misc.DonatorEmblem;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
+import net.minecraft.world.entity.Avatar;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,5 +37,15 @@ public class AvatarRendererMixin {
 
         if (state.nameTagAttachment != null) state.nameTagAttachment = state.nameTagAttachment.scale(y);
         state.shadowRadius *= Math.max(x, z) / 1.5f;
+    }
+
+    @Inject(method = "extractRenderState(Lnet/minecraft/world/entity/Avatar;Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;F)V", at = @At("RETURN"))
+    private void snowbird$extractRenderState(Avatar entity, AvatarRenderState state, float partialTicks, CallbackInfo ci) {
+        if (state.nameTag == null) return;
+        if (!DonatorEmblem.enabled.getValue()) return;
+        if (!(entity instanceof Player player)) return;
+        if (!(player instanceof PlayerDuck duck)) return;
+
+        state.nameTag = duck.snowbird$name$emblem(state.nameTag);
     }
 }

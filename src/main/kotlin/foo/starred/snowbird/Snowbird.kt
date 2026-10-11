@@ -6,6 +6,7 @@ import foo.starred.snowbird.internal.misc.DonatorSize
 import foo.starred.snowbird.internal.misc.DonatorTextReplacer
 import foo.starred.kommand.scopes.KommandCommandScope
 import foo.starred.snowbird.api.storage.AbstractJsonStore
+import foo.starred.snowbird.internal.misc.DonatorEmblem
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,6 +43,7 @@ object Snowbird : ClientModInitializer {
         LOGGER.debug("Initialised EventDispatcher - {}", EventDispatcher)
         LOGGER.debug("Initialised CommandLoader - {}", COMMANDS)
         LOGGER.debug("Initialised DonatorTextReplacer - {}", DonatorTextReplacer)
+        LOGGER.debug("Initialised DonatorEmblem - {}", DonatorEmblem)
         LOGGER.debug("Initialised DonatorSize - {}", DonatorSize)
         LOGGER.info("Snowbird finished initialisation.")
     }
