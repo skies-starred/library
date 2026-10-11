@@ -23,9 +23,14 @@ public class AvatarRendererMixin {
         final PlayerDuck c = (PlayerDuck) b;
         if (c.snowbird$size() == 0) return;
 
-        float x = c.snowbird$size$x() * 0.9375f;
-        float y = c.snowbird$size$y() * 0.9375f;
-        float z = c.snowbird$size$z() * 0.9375f;
+        float x0 = c.snowbird$size$x();
+        float y0 = c.snowbird$size$y();
+        float z0 = c.snowbird$size$z();
+        if (x0 == 1f && y0 == 1f && z0 == 1f) return;
+
+        float x = x0 * 0.9375f;
+        float y = y0 * 0.9375f;
+        float z = z0 * 0.9375f;
         poseStack.scale(x, y, z);
 
         if (state.nameTagAttachment != null) state.nameTagAttachment = state.nameTagAttachment.scale(y);
