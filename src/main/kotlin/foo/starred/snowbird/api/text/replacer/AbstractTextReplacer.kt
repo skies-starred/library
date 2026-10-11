@@ -5,6 +5,7 @@ package foo.starred.snowbird.api.text.replacer
 import foo.starred.snowbird.api.EMPTY_OPTIONAL
 import foo.starred.snowbird.utils.literal
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
+import net.minecraft.ChatFormatting
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.Style
 import net.minecraft.util.FormattedCharSequence
@@ -162,12 +163,26 @@ abstract class AbstractTextReplacer {
         var size = 0
 
         input.visit({ style, str ->
-            for (i in str.codePoints()) {
-                if (size >= chars.size) chars = chars.copyOf(chars.size * 2)
+            var current = style
+            val i1 = str.length
+            var i2 = 0
 
-                chars[size] = i
-                styles.add(style)
+            while (i2 < i1) {
+                val cp = str.codePointAt(i2)
+                if (cp == 167 && i2 + 1 < i1) {
+                    val formatting = ChatFormatting.getByCode(str[i2 + 1])
+                    if (formatting != null) {
+                        current = current.applyFormat(formatting)
+                        i2 += 2
+                        continue
+                    }
+                }
+
+                if (size >= chars.size) chars = chars.copyOf(chars.size * 2)
+                chars[size] = if (cp == 160) 32 else cp
+                styles.add(current)
                 size++
+                i2 += Character.charCount(cp)
             }
 
             EMPTY_OPTIONAL
@@ -248,7 +263,7 @@ abstract class AbstractTextReplacer {
 
         input.accept { _, style, cp ->
             if (size >= chars.size) chars = chars.copyOf(chars.size * 2)
-            chars[size] = cp
+            chars[size] = if (cp == 160) 32 else cp
             styles.add(style)
             size++
             true
