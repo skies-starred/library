@@ -2,7 +2,7 @@
 
 package foo.starred.snowbird.api
 
-import foo.starred.snowbird.utils.literal
+import foo.starred.snowbird.api.text.parser.impl.parse
 import foo.starred.snowbird.utils.send
 import net.minecraft.network.chat.Component
 import net.minecraft.network.protocol.game.ServerboundChatCommandPacket
@@ -13,13 +13,11 @@ fun String.message() {
 }
 
 fun String.lie() {
-    //~ if >= 26.1 'addMessage' -> 'addClientSystemMessage'
     //~ if >= 26.2 'chat' -> 'hud?.chat'
-    mainThread { gui?.hud?.chat?.addClientSystemMessage(this@lie.literal()) }
+    mainThread { gui?.hud?.chat?.addClientSystemMessage(this@lie.parse()) }
 }
 
 fun Component.lie() {
-    //~ if >= 26.1 'addMessage' -> 'addClientSystemMessage'
     //~ if >= 26.2 'chat' -> 'hud?.chat'
     mainThread { gui?.hud?.chat?.addClientSystemMessage(this@lie) }
 }
