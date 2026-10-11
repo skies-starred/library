@@ -4,7 +4,6 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import foo.starred.snowbird.internal.misc.DonatorTextReplacer;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -37,10 +36,9 @@ public class EditBoxMixin {
         this.snowbird$position = displayPos;
         this.snowbird$version = version;
 
-        final Component component = Component.literal(text);
-        final Component replaced = DonatorTextReplacer.INSTANCE.fn(component);
-        if (replaced == component) return this.snowbird$cached = original;
+        final FormattedCharSequence replaced = DonatorTextReplacer.INSTANCE.fn(original);
+        if (replaced == original) return this.snowbird$cached = original;
 
-        return this.snowbird$cached = replaced.getVisualOrderText();
+        return this.snowbird$cached = replaced;
     }
 }
