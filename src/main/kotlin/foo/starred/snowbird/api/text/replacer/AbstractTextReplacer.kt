@@ -234,11 +234,12 @@ abstract class AbstractTextReplacer {
             array1[i0] = styles[i1]
             i0++
 
-            if (state.output >= 0) {
+            val i2 = state.output
+            if (i2 >= 0) {
                 bool1 = true
-                i0 -= ia[state.output].size
+                i0 -= ia[i2].size
                 flush()
-                result.append(r1[state.output])
+                result.append(r1[i2].copy().withStyle { it.applyTo(array1[i0]!!) })
                 i0 = 0
                 state = root
             }
