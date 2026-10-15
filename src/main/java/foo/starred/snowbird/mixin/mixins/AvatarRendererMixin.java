@@ -45,7 +45,9 @@ public class AvatarRendererMixin {
         if (!DonatorEmblem.enabled.getValue()) return;
         if (!(entity instanceof Player player)) return;
         if (!(player instanceof PlayerDuck duck)) return;
+        if (duck.snowbird$name$emblem$int() == 0) return;
+        if (!state.nameTag.getString().startsWith("§8[")) return;
 
-        state.nameTag = duck.snowbird$name$emblem(state.nameTag);
+        state.nameTag = duck.snowbird$name$emblem$tag(state.nameTag);
     }
 }

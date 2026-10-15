@@ -41,6 +41,10 @@ object DonatorEmblem : IKommand<FabricClientCommandSource> {
         }
     }
 
+    fun fn(name: String): Boolean {
+        return emblems.containsKey(name)
+    }
+
     fun fn(name: String, tag: Component): Component {
         val emblem = emblems[name] ?: return tag
         return Component.empty().append(emblem.copy()).append(" <dark_gray>|<r> ".parse().skip()).append(tag)

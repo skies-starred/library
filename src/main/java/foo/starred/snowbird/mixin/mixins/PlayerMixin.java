@@ -13,7 +13,10 @@ import org.spongepowered.asm.mixin.Unique;
 @Mixin(Player.class)
 public class PlayerMixin implements PlayerDuck {
     @Unique
-    Component snowbird$name$emblem;
+    int snowbird$name$emblem$int = -1;
+
+    @Unique
+    Component snowbird$name$emblem$tag = null;
 
     @Unique
     int snowbird$size = -1;
@@ -28,9 +31,15 @@ public class PlayerMixin implements PlayerDuck {
     float snowbird$size$z = 1F;
 
     @Override
-    public @NotNull Component snowbird$name$emblem(@NonNull Component tag) {
-        if (snowbird$name$emblem == null) snowbird$name$emblem = DonatorEmblem.INSTANCE.fn(snowbird$self().getGameProfile().name(), tag);
-        return snowbird$name$emblem;
+    public int snowbird$name$emblem$int() {
+        if (snowbird$name$emblem$int == -1) snowbird$name$emblem$int = DonatorEmblem.INSTANCE.fn(snowbird$self().getGameProfile().name()) ? 1 : 0;
+        return snowbird$name$emblem$int;
+    }
+
+    @Override
+    public @NotNull Component snowbird$name$emblem$tag(@NonNull Component tag) {
+        if (snowbird$name$emblem$tag == null) snowbird$name$emblem$tag = DonatorEmblem.INSTANCE.fn(snowbird$self().getGameProfile().name(), tag);
+        return snowbird$name$emblem$tag;
     }
 
     @Override
