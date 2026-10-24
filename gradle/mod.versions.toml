@@ -1,5 +1,5 @@
 [versions]
-id = "snowbird"
-name = "Snowbird"
-version = "2026.10.3"
+id = "kontext"
+name = "Kontext"
+version = "2026.10.4"
 group = "foo.starred"

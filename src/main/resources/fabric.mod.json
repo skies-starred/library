@@ -18,13 +18,13 @@
   "entrypoints": {
     "client": [
       {
-        "value": "foo.starred.snowbird.Snowbird",
+        "value": "foo.starred.kontext.Kontext",
         "adapter": "kotlin"
       }
     ]
   },
   "mixins": [
-    "snowbird.mixins.json"
+    "kontext.mixins.json"
   ],
   "custom": {
     "modmenu": {

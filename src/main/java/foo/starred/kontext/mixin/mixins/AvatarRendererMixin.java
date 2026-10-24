@@ -1,0 +1,53 @@
+package foo.starred.kontext.mixin.mixins;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+import foo.starred.kontext.core.duck.AvatarRenderStateDuck;
+import foo.starred.kontext.core.duck.PlayerDuck;
+import foo.starred.kontext.core.misc.DonatorEmblem;
+import net.minecraft.client.renderer.entity.player.AvatarRenderer;
+import net.minecraft.client.renderer.entity.state.AvatarRenderState;
+import net.minecraft.world.entity.Avatar;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+@Mixin(AvatarRenderer.class)
+public class AvatarRendererMixin {
+    @Inject(method = "scale(Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;)V", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;scale(FFF)V"))
+    private void kontext$scale(AvatarRenderState state, PoseStack poseStack, CallbackInfo ci) {
+        final Entity a = ((AvatarRenderStateDuck) state).kontext$entity();
+        if (a == null) return;
+        if (!(a instanceof Player b)) return;
+
+        final PlayerDuck c = (PlayerDuck) b;
+        if (c.kontext$size() == 0) return;
+
+        float x0 = c.kontext$size$x();
+        float y0 = c.kontext$size$y();
+        float z0 = c.kontext$size$z();
+        if (x0 == 1f && y0 == 1f && z0 == 1f) return;
+
+        float x = x0 * 0.9375f;
+        float y = y0 * 0.9375f;
+        float z = z0 * 0.9375f;
+        poseStack.scale(x, y, z);
+
+        if (state.nameTagAttachment != null) state.nameTagAttachment = state.nameTagAttachment.scale(y);
+        state.shadowRadius *= Math.max(x, z) / 1.5f;
+    }
+
+    @Inject(method = "extractRenderState(Lnet/minecraft/world/entity/Avatar;Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;F)V", at = @At("RETURN"))
+    private void kontext$extractRenderState(Avatar entity, AvatarRenderState state, float partialTicks, CallbackInfo ci) {
+        if (state.nameTag == null) return;
+        if (!DonatorEmblem.enabled.getValue()) return;
+        if (!(entity instanceof Player player)) return;
+        if (!(player instanceof PlayerDuck duck)) return;
+        if (duck.kontext$name$emblem$int() == 0) return;
+        if (!state.nameTag.getString().startsWith("§8[")) return;
+
+        state.nameTag = duck.kontext$name$emblem$tag(state.nameTag);
+    }
+}

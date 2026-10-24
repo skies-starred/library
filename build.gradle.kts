@@ -29,6 +29,7 @@ dependencies {
     implementation(libs.fabric.loader)
     implementation(libs.fabric.language.kotlin)
 
+    implementation(libs.klassgraph)
     implementation(libs.kommand)
     implementation(libs.kbus)
 }
