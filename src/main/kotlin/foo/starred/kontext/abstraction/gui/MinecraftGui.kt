@@ -27,6 +27,10 @@ object MinecraftGui {
     val container: AbstractContainerScreen<*>?
         get() = screen as? AbstractContainerScreen<*>
 
+    val hidden: Boolean
+        //~ if >= 26.2 'MinecraftClient.instance.options.hideGui' -> 'instance.hud.isHidden'
+        get() = instance.hud.isHidden
+
     fun screen(screen: Screen) {
         nextTick {
             //? if >= 26.2 {
