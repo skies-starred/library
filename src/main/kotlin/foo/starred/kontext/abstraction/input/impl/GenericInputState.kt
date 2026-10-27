@@ -1,7 +1,9 @@
 package foo.starred.kontext.abstraction.input.impl
 
 import com.mojang.blaze3d.platform.InputConstants
+import foo.starred.kontext.abstraction.client.option.MinecraftOptions
 import foo.starred.kontext.abstraction.input.base.IInputState
+import net.minecraft.client.KeyMapping
 
 object GenericInputState : IInputState {
     override fun pressed(key: InputConstants.Key): Boolean {
@@ -26,5 +28,13 @@ object GenericInputState : IInputState {
 
     fun bound(key: Int): Boolean {
         return key != InputConstants.UNKNOWN.value
+    }
+
+    fun press(key: InputConstants.Key, down: Boolean) {
+        KeyMapping.set(key, down)
+    }
+
+    fun press(mapping: KeyMapping, down: Boolean) {
+        KeyMapping.set(MinecraftOptions.findBound(mapping), down)
     }
 }
