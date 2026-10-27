@@ -1,5 +1,5 @@
 [versions]
 id = "kontext"
 name = "Kontext"
-version = "2026.10.4"
+version = "2026.10.5"
 group = "foo.starred"
