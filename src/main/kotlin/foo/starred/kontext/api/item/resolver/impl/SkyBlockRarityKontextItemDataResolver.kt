@@ -17,7 +17,9 @@ object SkyBlockRarityKontextItemDataResolver : IKontextItemDataResolver<SkyBlock
 
         var rarity: SkyBlockItemRarity? = null
         for (line in lore) {
-            val stripped = line.stripped().trim().removePrefix("SHINY").trim()
+            var stripped = line.stripped().trim().removePrefix("SHINY").trim()
+            if (stripped.length > 2 && stripped[1].isWhitespace()) stripped = stripped.drop(2)
+            if (stripped.length > 2 && stripped[stripped.lastIndex - 1].isWhitespace()) stripped = stripped.dropLast(2)
             if (stripped.any { it.isLowerCase() }) continue
 
             val _rarity = SkyBlockItemRarity.entries.find { stripped.startsWith(it.display) }
