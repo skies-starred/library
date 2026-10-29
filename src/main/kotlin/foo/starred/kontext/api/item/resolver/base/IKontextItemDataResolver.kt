@@ -40,8 +40,12 @@ abstract class IKontextItemDataResolver<T>(open val cache: Boolean = true) {
         private val counter = AtomicInteger(0)
         private val NULL = Any()
 
-        fun ItemStack.customData(): CompoundTag? {
-            return get(DataComponents.CUSTOM_DATA)?.copyTag()
+        fun <T> create(cache: Boolean = false, resolver: (ItemStack) -> T?): IKontextItemDataResolver<T> {
+            return object : IKontextItemDataResolver<T>(cache) {
+                override fun resolve(stack: ItemStack): T? {
+                    return resolver(stack)
+                }
+            }
         }
     }
 }

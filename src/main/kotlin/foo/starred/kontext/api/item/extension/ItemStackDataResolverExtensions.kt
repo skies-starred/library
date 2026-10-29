@@ -1,13 +1,9 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package foo.starred.kontext.api.item.extension
 
-import com.mojang.authlib.GameProfile
-import com.mojang.authlib.properties.Property
 import foo.starred.kontext.api.item.resolver.base.IKontextItemDataResolver
-import net.minecraft.core.component.DataComponents
 import net.minecraft.world.item.ItemStack
-import net.minecraft.world.item.Items
-import net.minecraft.world.item.component.ResolvableProfile
-import java.util.*
 
 inline fun <reified R : IKontextItemDataResolver<T>, T> ItemStack.get(): T? {
     return R::class.objectInstance?.get(this)
@@ -29,10 +25,22 @@ inline fun <reified R : IKontextItemDataResolver<*>> ItemStack.invalidate() {
     R::class.objectInstance?.invalidate(this)
 }
 
-fun ItemStack.texture(texture: String): ItemStack {
-    if (item == Items.PLAYER_HEAD) {
-        set(DataComponents.PROFILE, ResolvableProfile.createResolved(GameProfile(UUID.randomUUID(), "").apply { properties.put("textures", Property("textures", texture)) }))
-    }
+inline fun <T> ItemStack.get(resolver: IKontextItemDataResolver<T>): T? {
+    return resolver.get(this)
+}
 
-    return this
+inline fun <T> ItemStack.getOrDefault(resolver: IKontextItemDataResolver<T>, default: T): T {
+    return resolver.get(this) ?: default
+}
+
+inline fun <T> ItemStack.set(resolver: IKontextItemDataResolver<T>, value: T?) {
+    resolver.set(this, value)
+}
+
+inline fun ItemStack.has(resolver: IKontextItemDataResolver<*>): Boolean {
+    return resolver.get(this) != null
+}
+
+inline fun ItemStack.invalidate(resolver: IKontextItemDataResolver<*>) {
+    resolver.invalidate(this)
 }

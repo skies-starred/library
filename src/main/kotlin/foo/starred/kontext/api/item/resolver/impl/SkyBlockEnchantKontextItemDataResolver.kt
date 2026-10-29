@@ -1,6 +1,7 @@
 package foo.starred.kontext.api.item.resolver.impl
 
 import foo.starred.kontext.api.item.data.enchant.SkyBlockItemEnchant
+import foo.starred.kontext.api.item.extension.customData
 import foo.starred.kontext.api.item.resolver.base.IKontextItemDataResolver
 import foo.starred.kontext.core.annotations.loader.LoadableKontextModule
 import net.minecraft.world.item.ItemStack
