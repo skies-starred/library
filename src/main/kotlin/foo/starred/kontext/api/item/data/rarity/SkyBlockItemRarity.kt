@@ -10,7 +10,7 @@ enum class SkyBlockItemRarity(val color: MinecraftColors) {
     EPIC(MinecraftColors.DARK_PURPLE),
     LEGENDARY(MinecraftColors.GOLD),
     MYTHIC(MinecraftColors.PINK),
-    SUPREME(MinecraftColors.AQUA),
+    DIVINE(MinecraftColors.AQUA),
     ULTIMATE(MinecraftColors.DARK_RED),
     SPECIAL(MinecraftColors.RED),
     VERY_SPECIAL(MinecraftColors.RED),
