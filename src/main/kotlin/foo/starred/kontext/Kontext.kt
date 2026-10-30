@@ -2,7 +2,7 @@ package foo.starred.kontext
 
 import com.google.gson.Gson
 import foo.starred.kommand.scopes.KommandCommandScope
-import foo.starred.kontext.api.storage.AbstractJsonStore
+import foo.starred.kontext.api.storage.impl.generic.impl.GenericJsonStore
 import foo.starred.kontext.core.annotations.impl.KontextAnnotationLoader
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
@@ -31,7 +31,7 @@ object Kontext : ClientModInitializer {
     val COMMANDS: KommandCommandScope<FabricClientCommandSource> = KommandCommandScope()
 
     @JvmField
-    val JSON: AbstractJsonStore = AbstractJsonStore("kontext", "config")
+    val JSON: GenericJsonStore = GenericJsonStore("kontext", "config")
 
     override fun onInitializeClient() {
         LOGGER.info("Kontext initialising...")

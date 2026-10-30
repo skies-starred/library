@@ -4,7 +4,8 @@ import com.google.gson.JsonObject
 import foo.starred.kommand.IKommand
 import foo.starred.kommand.scopes.KommandCommandScope
 import foo.starred.kontext.Kontext
-import foo.starred.kontext.api.storage.AbstractJsonStore
+import foo.starred.kontext.api.storage.impl.generic.extension.boolean
+import foo.starred.kontext.api.storage.impl.generic.property.base.AbstractStorageProperty
 import foo.starred.kontext.api.text.parser.impl.parse
 import foo.starred.kontext.core.annotations.loader.LoadableKontextModule
 import foo.starred.kontext.core.util.mod
@@ -24,7 +25,7 @@ object DonatorEmblem : IKommand<FabricClientCommandSource> {
     override val loader: KommandCommandScope<FabricClientCommandSource> = Kontext.COMMANDS
 
     @JvmField
-    var enabled: AbstractJsonStore.Value<Boolean> = Kontext.JSON.boolean("donatorEmblem", true)
+    var enabled: AbstractStorageProperty<Boolean> = Kontext.JSON.boolean("donatorEmblem", true)
 
     init {
         "https://data.starred.foo/donor/emblems".request {

@@ -5,12 +5,12 @@ package foo.starred.kontext.util
 import foo.starred.kontext.Kontext
 
 @JvmName($$"safely$noParam")
-inline fun safely(log: Boolean = false, fn: () -> Any?) {
+inline fun safely(log: Boolean = false, fn: () -> Unit) {
     safely<Exception>(log) { fn() }
 }
 
 @JvmName($$"safely$one")
-inline fun <reified E : Throwable> safely(log: Boolean = false, fn: () -> Any?) {
+inline fun <reified E : Throwable> safely(log: Boolean = false, fn: () -> Unit) {
     try {
         fn()
     } catch (e: Throwable) {
@@ -20,7 +20,7 @@ inline fun <reified E : Throwable> safely(log: Boolean = false, fn: () -> Any?) 
 }
 
 @JvmName($$"safely$two")
-inline fun <reified E1 : Throwable, reified E2 : Throwable> safely(log: Boolean = false, fn: () -> Any?) {
+inline fun <reified E1 : Throwable, reified E2 : Throwable> safely(log: Boolean = false, fn: () -> Unit) {
     try {
         fn()
     } catch (e: Throwable) {
@@ -30,7 +30,7 @@ inline fun <reified E1 : Throwable, reified E2 : Throwable> safely(log: Boolean 
 }
 
 @JvmName($$"safely$three")
-inline fun <reified E1 : Throwable, reified E2 : Throwable, reified E3 : Throwable> safely(log: Boolean = false, fn: () -> Any?) {
+inline fun <reified E1 : Throwable, reified E2 : Throwable, reified E3 : Throwable> safely(log: Boolean = false, fn: () -> Unit) {
     try {
         fn()
     } catch (e: Throwable) {

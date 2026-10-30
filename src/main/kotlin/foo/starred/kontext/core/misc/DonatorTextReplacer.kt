@@ -7,7 +7,8 @@ import foo.starred.kontext.Kontext
 import foo.starred.kontext.abstraction.chat.message.MinecraftMessages
 import foo.starred.kontext.api.EMPTY_COMPONENT
 import foo.starred.kontext.api.format.extension.component.literal
-import foo.starred.kontext.api.storage.AbstractJsonStore
+import foo.starred.kontext.api.storage.impl.generic.extension.boolean
+import foo.starred.kontext.api.storage.impl.generic.property.base.AbstractStorageProperty
 import foo.starred.kontext.api.text.parser.impl.parse
 import foo.starred.kontext.api.text.replacer.AbstractTextReplacer
 import foo.starred.kontext.core.annotations.loader.LoadableKontextModule
@@ -24,7 +25,7 @@ object DonatorTextReplacer : AbstractTextReplacer(), IKommand<FabricClientComman
     override val loader: KommandCommandScope<FabricClientCommandSource> = Kontext.COMMANDS
 
     @JvmField
-    var enabled: AbstractJsonStore.Value<Boolean> = Kontext.JSON.boolean("donatorName", true)
+    var enabled: AbstractStorageProperty<Boolean> = Kontext.JSON.boolean("donatorName", true)
 
     init {
         skips = "kontext_dts_bypass"
