@@ -6,6 +6,7 @@ import net.minecraft.core.component.DataComponents
 import net.minecraft.network.chat.Component
 import net.minecraft.world.item.ItemStack
 
+@Deprecated("Use GenericKontextItemDataResolver.LORE")
 @LoadableKontextModule
 object LoreKontextItemDataResolver : IKontextItemDataResolver<List<Component>>() {
     override val cache: Boolean = false
