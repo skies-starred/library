@@ -38,6 +38,21 @@ object DonatorEmblem : IKommand<FabricClientCommandSource> {
         }
 
         command("kontext") {
+            "refresh" / "emblems" {
+                "Refreshing emblem data...".mod()
+
+                "https://data.starred.foo/donor/emblems".request {
+                    success<JsonObject> { json ->
+                        for ((k, v) in json.entrySet()) {
+                            val v = v.asString
+                            emblems[k] = if (set.any { v.contains(it) }) emblem(v) else v.parse()
+                        }
+
+                        "Successfully refreshed emblem data!".mod()
+                    }
+                }
+            }
+
             "emblem" / "toggle" {
                 val bool = enabled.value
                 enabled.value = !bool

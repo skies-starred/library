@@ -6,7 +6,7 @@ import foo.starred.kontext.api.text.parser.impl.parse
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.MutableComponent
 
-private val prefix = "<#7695FF>[<#8BA5FF>S<#A1B6FF>n<#B6C6FF>o<#DBE3FF>w<#FFFFFF>b<#B6C6FF>i<#95ACFE>r<#7492FD>d<#5378FC>]".parse()
+private val prefix = "<#61C6EE>[<#72CCF2>K<#82D2F7>o<#93D8FB>n<#A3DEFF>t<#93D8FB>e<#82D2F7>x<#72CCF2>t<#61C6EE>]".parse()
 
 internal fun String.mod(block: MutableComponent.() -> Unit = {}) {
     parse(true).apply(block).mod()
