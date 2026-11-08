@@ -1,12 +1,14 @@
 package foo.starred.kontext.api.item.resolver.impl
 
 import foo.starred.kontext.api.item.extension.customData
-import foo.starred.kontext.api.item.resolver.base.IKontextItemDataResolver
 import foo.starred.kontext.api.item.resolver.base.LambdaKontextItemDataResolver
+import foo.starred.kontext.core.annotations.loader.LoadableKontextModule
 import net.minecraft.core.component.DataComponents
+import net.minecraft.network.chat.Component
 import kotlin.collections.firstOrNull
 import kotlin.jvm.optionals.getOrNull
 
+@LoadableKontextModule
 object GenericKontextItemDataResolver {
     object ID : LambdaKontextItemDataResolver<String>({ stack ->
         stack.customData()?.getString("id")?.getOrNull()
@@ -14,6 +16,10 @@ object GenericKontextItemDataResolver {
 
     object UUID : LambdaKontextItemDataResolver<String>({ stack ->
         stack.customData()?.getString("uuid")?.getOrNull()
+    })
+
+    object LORE : LambdaKontextItemDataResolver<List<Component>>({ stack ->
+        stack.get(DataComponents.LORE)?.styledLines()
     })
 
     object TEXTURE : LambdaKontextItemDataResolver<String>({ stack ->
