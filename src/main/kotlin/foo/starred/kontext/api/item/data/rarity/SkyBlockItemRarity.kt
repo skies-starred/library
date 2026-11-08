@@ -19,6 +19,10 @@ enum class SkyBlockItemRarity(val color: MinecraftColors) {
     val display: String = StringFormatter.titleCased(name).uppercase()
 
     companion object {
+        fun default(string: String): SkyBlockItemRarity? {
+            return entries.find { it.name.equals(string, true) }
+        }
+
         fun get(string: String): SkyBlockItemRarity? {
             return entries.find { it.display.equals(string, true) }
         }

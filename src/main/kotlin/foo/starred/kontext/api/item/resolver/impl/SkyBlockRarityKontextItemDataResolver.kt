@@ -9,6 +9,7 @@ import foo.starred.kontext.api.item.extension.customData
 import foo.starred.kontext.api.item.extension.get
 import foo.starred.kontext.api.item.resolver.base.IKontextItemDataResolver
 import foo.starred.kontext.core.annotations.loader.LoadableKontextModule
+import net.minecraft.core.component.DataComponents
 import net.minecraft.network.chat.Component
 import net.minecraft.world.item.ItemStack
 import kotlin.jvm.optionals.getOrNull
@@ -19,7 +20,7 @@ object SkyBlockRarityKontextItemDataResolver : IKontextItemDataResolver<SkyBlock
         val pet = stack.customData()?.getString("petInfo")?.getOrNull()?.let { JsonParser.parseString(it).asJsonObject.get("tier").asString }
         if (pet != null) return SkyBlockItemRarity.get(pet)
 
-        val lore = stack.get<LoreKontextItemDataResolver, List<Component>>()?.asReversed() ?: return null
+        val lore = stack.get<GenericKontextItemDataResolver.LORE, List<Component>>()?.asReversed() ?: return null
         var rarity: SkyBlockItemRarity? = null
 
         for (line in lore) {
@@ -33,6 +34,18 @@ object SkyBlockRarityKontextItemDataResolver : IKontextItemDataResolver<SkyBlock
 
             rarity = _rarity
             break
+        }
+
+        if (rarity == null) {
+            val identifier = stack.get(DataComponents.TOOLTIP_STYLE)?.path
+
+            if (identifier == "supreme") {
+                rarity = SkyBlockItemRarity.DIVINE
+            }
+
+            if (identifier != null) {
+                rarity = SkyBlockItemRarity.default(identifier)
+            }
         }
 
         return rarity
