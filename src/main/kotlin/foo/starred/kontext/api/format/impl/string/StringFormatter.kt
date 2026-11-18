@@ -28,6 +28,6 @@ object StringFormatter {
         return string
             .split(" ", "_", "-")
             .filter { it.isNotBlank() }
-            .joinToString(" ") { a -> a.replaceFirstChar { b -> b.uppercase() } }
+            .joinToString(" ") { it.lowercase().replaceFirstChar { c -> c.titlecase() } }
     }
 }
