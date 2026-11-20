@@ -3,13 +3,11 @@
 package foo.starred.kontext.api.item.resolver.base
 
 import foo.starred.kontext.api.item.duck.ItemStackDuck
-import net.minecraft.core.component.DataComponents
-import net.minecraft.nbt.CompoundTag
 import net.minecraft.world.item.ItemStack
 import java.util.concurrent.atomic.AtomicInteger
 
 abstract class IKontextItemDataResolver<T>(open val cache: Boolean = true) {
-    private val id: Int = counter.getAndIncrement()
+    private val id: Int = COUNTER.getAndIncrement()
 
     fun get(stack: ItemStack): T? {
         if (stack.isEmpty) return null
@@ -37,7 +35,7 @@ abstract class IKontextItemDataResolver<T>(open val cache: Boolean = true) {
     abstract fun resolve(stack: ItemStack): T?
 
     companion object {
-        private val counter = AtomicInteger(0)
+        private val COUNTER = AtomicInteger(0)
         private val NULL = Any()
 
         fun <T> create(cache: Boolean = false, resolver: (ItemStack) -> T?): IKontextItemDataResolver<T> {

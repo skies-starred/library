@@ -1,14 +1,14 @@
 package foo.starred.kontext.mixin.mixins;
 
-import foo.starred.kontext.core.duck.AvatarRenderStateDuck;
-import net.minecraft.client.renderer.entity.state.AvatarRenderState;
+import foo.starred.kontext.api.entity.duck.EntityRenderStateDuck;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
-@Mixin(AvatarRenderState.class)
-public class AvatarRenderStateMixin implements AvatarRenderStateDuck {
+@Mixin(EntityRenderState.class)
+public class EntityRenderStateMixin implements EntityRenderStateDuck {
     @Unique
     private Entity kontext$entity;
 

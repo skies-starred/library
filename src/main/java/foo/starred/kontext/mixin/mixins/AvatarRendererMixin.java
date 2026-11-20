@@ -1,7 +1,7 @@
 package foo.starred.kontext.mixin.mixins;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import foo.starred.kontext.core.duck.AvatarRenderStateDuck;
+import foo.starred.kontext.api.entity.duck.EntityRenderStateDuck;
 import foo.starred.kontext.core.duck.PlayerDuck;
 import foo.starred.kontext.core.misc.DonatorEmblem;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class AvatarRendererMixin {
     @Inject(method = "scale(Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;)V", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;scale(FFF)V"))
     private void kontext$scale(AvatarRenderState state, PoseStack poseStack, CallbackInfo ci) {
-        final Entity a = ((AvatarRenderStateDuck) state).kontext$entity();
+        final Entity a = EntityRenderStateDuck.Companion.get(state);
         if (a == null) return;
         if (!(a instanceof Player b)) return;
 
